@@ -1,0 +1,64 @@
+library(batchtools)
+
+
+if (!dir.exists(paste0("wce-ranef-surv-registry_", hshape))) {
+  if (batchh) {
+    reg <- makeExperimentRegistry(
+      paste0("wce-ranef-surv-registry_", hshape),
+      conf.file = ".batchtools.conf.R",
+      packages  = c("mgcv", "magrittr", "dplyr", "purrr", "pammtools", "ggplot2", "extraDistr"),
+      source    = c("problems-wce-ranef-survival.R", "algorithms-wce-ranef-survival.R"),
+      seed      = 19190124)
+  } else {
+    reg <- makeExperimentRegistry(
+      paste0("wce-ranef-surv-registry_", hshape),
+      packages = c("mgcv", "magrittr", "dplyr", "purrr", "pammtools", "ggplot2", "extraDistr"),
+      source   = c("problems-wce-ranef-survival.R", "algorithms-wce-ranef-survival.R"),
+      seed     = 19190124) 
+  }
+} else {
+  reg <- loadRegistry(file.dir = paste0("wce-ranef-surv-registry_", hshape, "/"), writeable=TRUE,
+                      work.dir = getwd(), conf.file = ".batchtools.conf.R")
+}
+
+
+# reg$cluster.functions = makeClusterFunctionsMulticore(ncpus=4)
+saveRegistry()
+
+
+#### wce ranef for survival data
+addProblem(
+  name = paste0("sim_wce_ranef_ped", ihshape, "_", name_true_sigma),
+  data = readRDS(paste0("input/static_part_ped", ihshape, "_", name_true_sigma,".Rds")),
+  fun  = sim_wce_ranef_ped,
+  seed = 20160618)
+## setting a problem seed: the problem seed is incremented only depending on the
+## experiment replication, so that different algorithms are evaluated on the
+## same stochastic instance.
+
+addAlgorithm(
+  name = "wce_ranef_ped",
+  fun  = wce_ranef_ped)
+addAlgorithm(
+  name = "wce_ranef_ridge_ped",
+  fun  = wce_ranef_ridge_ped)
+addAlgorithm(
+  name = "wce_ranef_constrained_ped",
+  fun  = wce_ranef_constrained_ped)
+addAlgorithm(
+  name = "wce_ranef_ad_ped",
+  fun  = wce_ranef_ad_ped)
+
+# prob_list <- replicate(6, data.frame())
+# prob_list <- setNames(prob_list,
+#                       paste0("sim_wce_ranef_ped", 1:6, "_", name_true_sigma))
+prob_list <- list(data.frame())
+prob_list <- setNames(prob_list,
+                      paste0("sim_wce_ranef_ped", ihshape, "_", name_true_sigma))
+addExperiments(
+  prob.designs = prob_list,
+  algo.designs = list(wce_ranef_ped = data.frame(debug = FALSE),
+                      wce_ranef_ridge_ped = data.frame(debug = FALSE),
+                      wce_ranef_constrained_ped = data.frame(debug = FALSE),
+                      wce_ranef_ad_ped = data.frame(debug = FALSE)),
+  repls = n_simA)
