@@ -1,6 +1,6 @@
 # README
 
-This is the accompanying code repository for the manuscript 
+This is the accompanying code repository for the manuscript: 
 
 *"Flexible modelling of time-varying exposures and recurrent events to analyze training loads and injuries"*.
 
