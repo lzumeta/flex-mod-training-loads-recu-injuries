@@ -2,8 +2,7 @@
 .Rhistory
 .RData
 .Ruserdata
-
-.Rproj
+*.Rproj
 
 ## stuff to delete (sim outputs, old and current)
 code/simulation/input
