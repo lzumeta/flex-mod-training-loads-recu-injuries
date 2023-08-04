@@ -150,3 +150,4 @@ ggsave(paste0(output_path, "sim_boxplots.pdf"), plot = last_plot(), device = "pd
 ggsave(paste0(output_path, "sim_boxplots.eps"), plot = last_plot(), device = cairo_ps, width = 18, height = 5.7)
 
 
+graphics.off()
