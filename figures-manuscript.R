@@ -48,10 +48,10 @@ for (h in c(1:4)) { ## shapes: exponential decay, bi-linear, early peak and cons
     model_label <- model_labels[[j]]
     id_pamm_wce_ped  <- findExperiments(prob.name = paste0("sim_wce_ranef_ped", h,"_", name_true_sigma), 
                                         algo.name = paste0("wce_ranef_", model_name, "ped"))
-    res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) %>%
-      as_tibble() %>%
+    res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) |>
+      as_tibble() |>
       unnest("result")
-    avg_simresults_df <- avg_simresults_df %>% 
+    avg_simresults_df <- avg_simresults_df |> 
       bind_rows(avg_simresults(res_pamm_wce_ped, name = model_label))
     
     pxnsim_name <- paste0("pxnsim", h, j)
@@ -93,8 +93,8 @@ for (h in 1:4) {
       model_label      <- model_labels[[j]]
       id_pamm_wce_ped  <- findExperiments(prob.name = paste0("sim_wce_ranef_ped", h, "_", name_true_sigma), 
                                           algo.name = paste0("wce_ranef_", model_name, "ped"))
-      res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) %>%
-        as_tibble() %>%
+      res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) |>
+        as_tibble() |>
         unnest("result")  
       
       sim_res <- simsummary_pamm_wce(res_pamm_wce_ped, true_sigma)
@@ -107,14 +107,14 @@ for (h in 1:4) {
   }
 }
 
-simsummary_df <- simsummary_df %>% 
+simsummary_df <- simsummary_df |> 
   mutate(data_generation1_new = recode(data_generation1,
                                        "hshape*ztz 1" = "(a) exponential decay",
                                        "hshape*ztz 2" = "(b) bi-linear",
                                        "hshape*ztz 3" = "(c) early peak",
                                        "hshape*ztz 4" = "(d) inverted U"))
 
-p1 <- simsummary_df %>% 
+p1 <- simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = RMSE_h, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
@@ -124,17 +124,17 @@ p1 <- simsummary_df %>%
   theme(legend.text = element_text(size = rel(1.3)),
         axis.text.x = element_text(size = rel(0.9)))
 
-p2 <- simsummary_df %>% 
+p2 <- simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = mse_sigma, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
-  xlab("Heterogeneity level") + ylab(expression("Squared Error ("*sigma*")")) +
+  xlab("Heterogeneity level") + ylab(expression("Squared Error ("*sigma[b]*")")) +
   theme(legend.text = element_text(size = rel(1.3)),
         axis.text.x = element_text(size = rel(0.9)))
 
-p3 <- simsummary_df %>% 
+p3 <- simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = coverage_h, fill = data_generation3)) +
   geom_boxplot() + 
   geom_hline(yintercept = 0.95) +
