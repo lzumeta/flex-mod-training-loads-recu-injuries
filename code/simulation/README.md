@@ -4,8 +4,9 @@ I used the `batchtools` package and the abstract experiment description, that th
 
 A so-called registry object is created, which defines a directory where all relevant information, files and results of the computational jobs are stored with `makeExperimentRegistry`. Thus, the results are reproducible:
 
-With the `registry` object everybody can reproduce the results on their own batch system by simply exchanging the cluster functions back end. In our experiment, each problem has one unique seed (i.e. synchronized problems). The problem seed is incremented only depending on the experiment replication so that all the algorithms retrieve the same problem instances for each distinct replication.
-
+<ul>
+with the `registry` object everybody can reproduce the results on their own batch system by simply exchanging the cluster functions back end. In our experiment, each problem has one  unique seed   (i.e. synchronized problems). The problem seed is incremented only depending on the experiment replication so that all the algorithms retrieve the same problem instances for each distinct replication.
+</ul>
 
 ## Scripts
 
