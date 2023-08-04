@@ -12,3 +12,4 @@ code/simulation/registry/
 *.pdf
 *.eps
 *.tex
+*.slurm
