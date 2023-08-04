@@ -117,10 +117,10 @@ for (h in 1:6) {
       model_label <- model_labels[[j]]
       id_pamm_wce_ped  <- findExperiments(prob.name = paste0("sim_wce_ranef_ped", h,"_", name_true_sigma), 
                                           algo.name = paste0("wce_ranef_", model_name, "ped"))
-      res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) %>%
-        as_tibble() %>%
+      res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) |>
+        as_tibble() |>
         unnest("result")
-      avg_simresults_df <- avg_simresults_df %>% 
+      avg_simresults_df <- avg_simresults_df |> 
         bind_rows(avg_simresults(res_pamm_wce_ped, name = model_label))
       
       pxnsim_name <- paste0("pxnsim", i, j)
@@ -135,9 +135,9 @@ for (h in 1:6) {
                                     get(paste0("pxnsim", i, "3")), ncol = 1))
   }
   
-  pslicexnsim <- grid.arrange(arrangeGrob(pxnsim1, top = grid::textGrob(expression(sigma*'= 0.05'), gp = grid::gpar(fontsize = rel(16)))),
-                              arrangeGrob(pxnsim2, top = grid::textGrob(expression(sigma*'= 0.5'), gp = grid::gpar(fontsize = rel(16)))),
-                              arrangeGrob(pxnsim3, top = grid::textGrob(expression(sigma*'= 1'), gp = grid::gpar(fontsize = rel(16)))), ncol = 3, 
+  pslicexnsim <- grid.arrange(arrangeGrob(pxnsim1, top = grid::textGrob(expression(sigma[b]*'= 0.05'), gp = grid::gpar(fontsize = rel(16)))),
+                              arrangeGrob(pxnsim2, top = grid::textGrob(expression(sigma[b]*'= 0.5'), gp = grid::gpar(fontsize = rel(16)))),
+                              arrangeGrob(pxnsim3, top = grid::textGrob(expression(sigma[b]*'= 1'), gp = grid::gpar(fontsize = rel(16)))), ncol = 3, 
                               top = grid::textGrob(bquote(.(h_label)*" h"[.(h)]*"(t-t"[z]*")*z(t"[z]*")"), 
                                                    gp=grid::gpar(fontsize=rel(18), fontface = "bold")),
                               padding = unit(1.5, "line"))
@@ -169,13 +169,13 @@ for (h in 1:6) {
       model_label      <- model_labels[[j]]
       id_pamm_wce_ped  <- findExperiments(prob.name = paste0("sim_wce_ranef_ped", h, "_", name_true_sigma), 
                                           algo.name = paste0("wce_ranef_", model_name, "ped"))
-      res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) %>%
-        as_tibble() %>%
+      res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) |>
+        as_tibble() |>
         unnest("result")  
       
       sim_res <- simsummary_pamm_wce(res_pamm_wce_ped, true_sigma)
       sim_res_aux <- data.frame(data_generation1 = paste0("hshape*ztz ", h),
-                                data_generation2 = paste0("$\\sigma$ = ", true_sigma),
+                                data_generation2 = paste0("$\\sigma_b$ = ", true_sigma),
                                 data_generation3 = paste0("model: ", model_label))
       simsummary_df <- bind_rows(simsummary_df,
                                  bind_cols(sim_res_aux, sim_res))
@@ -183,7 +183,7 @@ for (h in 1:6) {
   }
 }
 
-simsummary_df <- simsummary_df %>% 
+simsummary_df <- simsummary_df |> 
   mutate(data_generation1_new = recode(data_generation1,
                                        "hshape*ztz 1" = "(a) exponential decay",
                                        "hshape*ztz 2" = "(b) bi-linear",
@@ -192,7 +192,7 @@ simsummary_df <- simsummary_df %>%
                                        "hshape*ztz 5" = "(e) constant",
                                        "hshape*ztz 6" = "(f) hat"))
 
-simsummary_df %>% 
+simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = RMSE_h, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
@@ -202,17 +202,17 @@ simsummary_df %>%
   # ggtitle("Boxplots of RMSE (h) in each scenario setting")
 ggsave(paste0(output_path, "p_res_boxplot_h.eps"), plot = last_plot(),   device = cairo_ps(), width = 12, height = 6.4)
 
-simsummary_df %>% 
+simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = mse_sigma, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
-  xlab("Heterogeneity level") + ylab("Squared Error (sigma)")
+  xlab("Heterogeneity level") + ylab(bquote("Squared Error ("*sigma[b]*")"))
   # ggtitle("Boxplots of Squared Error (sigma) in each scenario setting")
 ggsave(paste0(output_path, "p_res_boxplot_sigma.eps"), plot = last_plot(), device = cairo_ps(), width = 12, height = 6.4)
 
-simsummary_df %>% 
+simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = coverage_h, fill = data_generation3)) +
   geom_boxplot() + 
   geom_hline(yintercept = 0.95) +
@@ -225,5 +225,66 @@ ggsave(paste0(output_path, "p_res_boxplot_cov_h.eps"), plot = last_plot(), devic
 
 
 
+# Coverage for each lag point ---------------------------------------------
+## initialize an empty list
+simsummary_avg_coverages_df <- data.frame(data_generation1 = vector("character", 0L),
+                                          data_generation2 = vector("character", 0L),
+                                          data_generation3 = vector("character", 0L),
+                                          mRMSE_h          = vector("double", 0L),
+                                          RMSE_sigma      = vector("double", 0L),
+                                          mcoverage_h      = vector("double", 0L))
+model_labels     <- c("PAMM WCE", "PAMM WCE CONSTR.", "PAMM WCE RIDGE")
+h_labels2 <- c("(a) exponential decay", "(b) bi-linear", "(c) early peak",
+               "(d) inverted U", "(e) constant", "(f) hat")
+for (h in 1:6) {
+  reg <- loadRegistry(paste0(reg_path, "hshape", h, "/"), work.dir = getwd())
+  h_label <- h_labels2[[h]]
+  for (i in 1:3) {   ## sigmas
+    name_true_sigma <- name_true_sigmas[[i]]
+    true_sigma      <- true_sigmas[[i]]
+    for (j in 1:3) { ## models
+      model_name       <- model_names[[j]]
+      model_label      <- model_labels[[j]]
+      id_pamm_wce_ped  <- findExperiments(prob.name = paste0("sim_wce_ranef_ped", h, "_", name_true_sigma), 
+                                          algo.name = paste0("wce_ranef_", model_name, "ped"))
+      res_pamm_wce_ped <- reduceResultsDataTable(ids=findDone(id_pamm_wce_ped[,1])) |>
+        as_tibble() |>
+        unnest("result")  
+      
+      sim_res <- simsummary_avg_coverages(res_pamm_wce_ped, true_sigma)
+      sim_res_aux <- data.frame(data_generation1 = paste0("hshape*ztz ", h),
+                                data_generation2 = paste0("$\\sigma_b$ = ", true_sigma),
+                                data_generation3 = paste0("model: ", model_label))
+      simsummary_avg_coverages_df <- bind_rows(simsummary_avg_coverages_df,
+                                               bind_cols(sim_res_aux, sim_res))
+    }
+    p_pointcov_one_name <- paste0("p_pointcov_", i)
+    assign(p_pointcov_one_name, gg_av_coverages(simsummary_avg_coverages_df, true_sigma))
+  }
+  p_pointcov_shape_name <- paste0("p_pointcov_hshape", h)
+  assign(p_pointcov_shape_name,
+         p_pointcov_1 + p_pointcov_2 + p_pointcov_3 +
+           plot_layout(ncol = 3, guides = "collect") + 
+           plot_annotation(title = h_label, 
+                           theme = theme(plot.title = element_text(size = rel(1.6), hjust = 0.4))))
+  ggsave(filename = paste0(output_path, p_pointcov_shape_name, ".eps"), 
+         plot = get(p_pointcov_shape_name),
+         device = cairo_ps(), width = 13, height = 4.8)
+}
+
+## Put together shapes 1-3
+wrap_elements(p_pointcov_hshape1) + 
+  wrap_elements(p_pointcov_hshape2) + wrap_elements(p_pointcov_hshape3) + plot_layout(ncol = 1)
+ggsave(filename = paste0(output_path, "p_pointcov_hshapes1-3.eps"), 
+       plot = last_plot(),
+       device = cairo_ps(), width = 13, height = 14)
+
+## Put together shape 4-6
+wrap_elements(p_pointcov_hshape4) + 
+  wrap_elements(p_pointcov_hshape5) + wrap_elements(p_pointcov_hshape6) + plot_layout(ncol = 1)
+ggsave(filename = paste0(output_path, "p_pointcov_hshapes4-6.eps"), 
+       plot = last_plot(),
+       device = cairo_ps(), width = 13, height = 14)
 
 
+graphics.off()
