@@ -2,7 +2,7 @@
 
 This is the accompanying code repository for the research paper:
 
-*"Flexible modelling of time-varying exposures and recurrent events to analyze training loads and injuries"*.
+*"Flexible modelling of time-varying exposures and recurrent events to analyze training loads effects in team sports injuries"*.
 
 
 ## Session info
@@ -18,9 +18,10 @@ BLAS:   /usr/lib/x86_64-linux-gnu/blas/libblas.so.3.7.1
 LAPACK: /usr/lib/x86_64-linux-gnu/lapack/liblapack.so.3.7.1
 
 locale:
- [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=es_ES.UTF-8        LC_COLLATE=en_US.UTF-8     LC_MONETARY=es_ES.UTF-8   
- [6] LC_MESSAGES=en_US.UTF-8    LC_PAPER=es_ES.UTF-8       LC_NAME=C                  LC_ADDRESS=C               LC_TELEPHONE=C            
-[11] LC_MEASUREMENT=es_ES.UTF-8 LC_IDENTIFICATION=C       
+ [1] LC_CTYPE=en_US.UTF-8       LC_NUMERIC=C               LC_TIME=es_ES.UTF-8       
+ [4] LC_COLLATE=en_US.UTF-8     LC_MONETARY=es_ES.UTF-8    LC_MESSAGES=en_US.UTF-8   
+ [7] LC_PAPER=es_ES.UTF-8       LC_NAME=C                  LC_ADDRESS=C              
+[10] LC_TELEPHONE=C             LC_MEASUREMENT=es_ES.UTF-8 LC_IDENTIFICATION=C       
 
 time zone: Europe/Madrid
 tzcode source: system (glibc)
@@ -29,11 +30,12 @@ attached base packages:
 [1] stats     graphics  grDevices utils     datasets  methods   base     
 
 loaded via a namespace (and not attached):
-[1] compiler_4.3.1    magrittr_2.0.3    cli_3.6.1         tools_4.3.1       rstudioapi_0.15.0 vctrs_0.6.3       lifecycle_1.0.3  
-[8] rlang_1.1.1       purrr_1.0.1 
+[1] compiler_4.3.1    magrittr_2.0.3    cli_3.6.1         tools_4.3.1      
+[5] rstudioapi_0.15.0 vctrs_0.6.3       lifecycle_1.0.3   rlang_1.1.1      
+[9] purrr_1.0.1  
 
 devtools::session_info()
-─ Session info ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─ Session info ─────────────────────────────────────────────────────────────────
  setting  value
  version  R version 4.3.1 (2023-06-16)
  os       Ubuntu 18.04.6 LTS
@@ -47,7 +49,7 @@ devtools::session_info()
  rstudio  2023.06.0+421 Mountain Hydrangea (desktop)
  pandoc   1.19.2.4 @ /usr/bin/pandoc
 
-─ Packages ─────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+─ Packages ─────────────────────────────────────────────────────────────────────
  package     * version date (UTC) lib source
  cachem        1.0.8   2023-05-01 [1] CRAN (R 4.3.1)
  callr         3.7.3   2022-11-02 [1] CRAN (R 4.3.1)
@@ -95,5 +97,5 @@ devtools::session_info()
  [3] /usr/lib/R/site-library
  [4] /usr/lib/R/library
 
-────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────────
+────────────────────────────────────────────────────────────────────────────────
 ```
