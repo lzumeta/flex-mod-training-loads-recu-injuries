@@ -94,7 +94,9 @@ gg_pamm_xslice_nsims <- function(res_sim_df, xs = c(1), model_name,
     {if (band_curves) geom_line(aes(y = high_curve, col = "blue"), linewidth = 1,
                                 data = data_avg)} +
     geom_hline(yintercept = 0, linetype = 2) +
-    ylab(expression(hat(h)(t-t[z])*z(t[z]))) + xlab(expression(t-t[z])) +
+    xlab(expression(t-t[z])) +
+    {if (xs == 1)  ylab(expression(hat(h)(t-t[z])))
+      else  ylab(expression(hat(h)(t-t[z])*z(t[z])))} +
     {if (!band_curves) scale_color_manual(name = "", values = c("black", "grey", "red"),
                                          labels = c("Truth", model_name, "Mean"))} +
     {if (band_curves) scale_color_manual(name = "", values = c("black", "blue", "grey", "red"),
