@@ -173,9 +173,9 @@ rereduce <- function(data, method = c("aic", "bic", "dev_expl"), model_name) {
 ## replication across each shape and sigma
 best_aic_models <- function(data) {
   data |> 
-    mutate(min_aic = apply(.[,c(4, 7, 10)], 1, function(x) names(x)[which.min(x)]),
-           min_bic = apply(.[,c(5, 8, 11)], 1, function(x) names(x)[which.min(x)]),
-           max_dev = apply(.[,c(6, 9, 12)], 1, function(x) names(x)[which.max(x)])) |> 
+    mutate(min_aic = apply(data[,c(4, 7, 10)], 1, function(x) names(x)[which.min(x)]),
+           min_bic = apply(data[,c(5, 8, 11)], 1, function(x) names(x)[which.min(x)]),
+           max_dev = apply(data[,c(6, 9, 12)], 1, function(x) names(x)[which.max(x)])) |> 
     group_by(data_generation1, data_generation2) |> 
     summarise(lowest_aic_PAMM        = sum(min_aic == "aic_PAMM_WCE"),
               lowest_aic_PAMM_RIDGE  = sum(min_aic == "aic_PAMM_WCE_RIDGE"),

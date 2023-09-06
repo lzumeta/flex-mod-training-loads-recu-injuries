@@ -79,7 +79,7 @@ tab <- simsummary_avg_df |>
                                       data_generation3 == "model: PAMM WCE CONSTR." ~ "PAMM WCE Constr.",
                                       data_generation3 == "model: PAMM WCE RIDGE" ~ "PAMM WCE Ridge"
   )) |> 
-  kbl(., booktabs = T, align = c("l", "l", "l", "c", "c", "c", "c"),
+  kbl(booktabs = T, align = c("l", "l", "l", "c", "c", "c", "c"),
       caption = paste0("Simulation results for $N_{\\text{sim}} = ", 
                        n_simA, "$ in each scenario setting in terms of mean RMSE and mean coverage of $h_{t, t_z, z(t_z)}$ and RMSE of $\\sigma_b$\\label{tab:simres}"),
       col.names = c("WCE shape", "Heterogeneity", " ", "$h_{t, t_z, z(t_z)}$", "$\\sigma_b$", "$h_{t, t_z, z(t_z)}$"),
@@ -136,7 +136,7 @@ tab <- aic_df |>
   select(contains("data"), contains("bic"), contains("dev")) |> 
   mutate(across(.cols = contains("PAMM"), .fn =  ~str_match_all(., "(?<=\\().+?(?=\\))")),
          across(.cols = contains("PAMM"), .fn =  ~str_extract_all(., "\\d+"))) |> 
-  kbl(., booktabs = T, align = c("l", "l", "c", "c", "c", "c", "c", "c", "c", "c", "c"),
+  kbl(booktabs = T, align = c("l", "l", "c", "c", "c", "c", "c", "c", "c", "c", "c"),
       caption = paste0("Frequency of the models that yield best BIC and Deviance explained in each replication of the simulation, $N_{\\text{sim}}$ = ",
                        n_simA, ", across all scenarios\\label{tab:bestmodels_small}."),
       col.names = c("WCE shape", "Heterogeneity",
