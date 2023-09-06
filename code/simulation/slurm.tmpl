@@ -22,6 +22,7 @@
 log.file = fs::path_expand(log.file)
 -%>
 
+#SBATCH --account=bcam-exclusive
 #SBATCH --job-name=<%= job.name %>
 #SBATCH --output=<%= log.file %>
 #SBATCH --error=<%= log.file %>

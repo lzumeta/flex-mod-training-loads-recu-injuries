@@ -45,9 +45,9 @@ addAlgorithm(
 addAlgorithm(
   name = "wce_ranef_constrained_ped",
   fun  = wce_ranef_constrained_ped)
-addAlgorithm(
-  name = "wce_ranef_ad_ped",
-  fun  = wce_ranef_ad_ped)
+# addAlgorithm(
+#   name = "wce_ranef_ad_ped",
+#   fun  = wce_ranef_ad_ped)
 
 # prob_list <- replicate(6, data.frame())
 # prob_list <- setNames(prob_list,
@@ -59,6 +59,6 @@ addExperiments(
   prob.designs = prob_list,
   algo.designs = list(wce_ranef_ped = data.frame(debug = FALSE),
                       wce_ranef_ridge_ped = data.frame(debug = FALSE),
-                      wce_ranef_constrained_ped = data.frame(debug = FALSE),
-                      wce_ranef_ad_ped = data.frame(debug = FALSE)),
+                      wce_ranef_constrained_ped = data.frame(debug = FALSE)),
+                      # wce_ranef_ad_ped = data.frame(debug = FALSE)),
   repls = n_simA)

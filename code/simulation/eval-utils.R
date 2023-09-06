@@ -69,7 +69,7 @@ gg_pamm_lagslice <- function(res_avg_data, lags = c(5, 10, 30)) { ## lags param 
 gg_pamm_xslice_nsims <- function(res_sim_df, xs = c(1), model_name,
                                  sampled = FALSE, band_curves = FALSE) { 
   set.seed(16)
-  ids <- sample(1:500, 50)
+  ids <- sample(1:500, 100)
   job.ids <- unique(res_sim_df$job.id)[ids]
   
   data <- res_sim_df |> 

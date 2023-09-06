@@ -21,14 +21,14 @@ ihshapes         <- 1:6
 source("weight-functions-utils.R")
 
 ## run create-static-part.R
-for (i in 1:3) {
+for (i in c(1:3)) {
   true_sigma      <- true_sigmas[[i]]
   name_true_sigma <- name_true_sigmas[[i]]
   source("create-static-part.R", echo=TRUE, local = TRUE)
 }
 
 
-purrr::map(1:6, 
+purrr::map(c(1:6), 
            .f = function(i) purrr::map2(.x = true_sigmas, .y = name_true_sigmas,
                                         .f = function(true_sigma, name_true_sigma) {
                                           true_sigma <- true_sigma

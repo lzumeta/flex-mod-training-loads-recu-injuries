@@ -10,8 +10,8 @@ wce_ranef_ped <- function(
   require(dplyr)
   
   mod <- gam(
-    ped_status ~ s(tend, k = 10, bs = "ps") + 
-      s(tz_df, by = Z*LL, k = 30, bs = "ps") + s(id, bs = "re"),
+    ped_status ~ s(tend, k  = 10, bs = "ps") + 
+      s(tz_df, by = Z*LL, k = 15, bs = "ps") + s(id, bs = "re"),
     data = instance, family = poisson(), offset = offset, control = list(trace = TRUE), method = "REML")
   
   ndf    <- ndf2 <- data$ndf
@@ -103,7 +103,7 @@ wce_ranef_ridge_ped <- function(
   
   mod <- gam(
     ped_status ~ s(tend, k = 10, bs = "ps") + 
-      s(tz_df, by = Z*LL, k = 30, bs = "fdl", xt = list(constrain = FALSE, ridge = TRUE)) +
+      s(tz_df, by = Z*LL, k = 15, bs = "fdl", xt = list(constrain = FALSE, ridge = TRUE)) +
       s(id, bs = "re"),
     data = instance, family = poisson(), offset = offset, control = list(trace=TRUE), method = "REML")
   
@@ -154,7 +154,7 @@ wce_ranef_constrained_ped <- function(
   
   mod <- gam(
     ped_status ~ s(tend, k = 10, bs = "ps") + 
-      s(tz_df, by = Z*LL, k = 30, bs = "fdl", xt = list(constrain = TRUE, ridge = FALSE)) + 
+      s(tz_df, by = Z*LL, k = 15, bs = "fdl", xt = list(constrain = TRUE, ridge = FALSE)) + 
       s(id, bs = "re"),
     data = instance, family = poisson(), offset = offset, control = list(trace = TRUE), method = "REML")
   
@@ -206,7 +206,7 @@ wce_ranef_ad_ped <- function(
   
   mod <- gam(
     ped_status ~ s(tend, k = 10, bs = "ps") + 
-      s(tz_df, by = Z*LL, k = 40, m = 8, bs = "ad") + ## by default p-splines are used
+      s(tz_df, by = Z*LL, k = 15, m = 6, bs = "ad") + ## by default p-splines are used
       s(id, bs = "re"),
     data = instance, family = poisson(), offset = offset, control = list(trace = TRUE), method = "REML")
   

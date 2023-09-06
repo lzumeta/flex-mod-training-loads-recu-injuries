@@ -38,13 +38,13 @@ submitJobs(ids = findNotDone(exp_wce_constrained_ranef_ped[,1]),
            reg=reg, resources=list(partition="bcam-exclusive", walltime=60*8, ntasks=1, ncpus=4, memory=500)) 
 waitForJobs()
 
-## PAM WCE Adaptive splines RANEF for WCE RANEF survival data
-exp_wce_ad_ranef_ped <- findExperiments(
-  prob.name = paste0("sim_wce_ranef_ped", ihshape, "_", name_true_sigma),
-  algo.name = "wce_ranef_ad_ped")
-
-# t1_pam_wce_ad_ranef1 <- testJob(id = exp_wce_ad_ranef_ped1[1,1])
-submitJobs(ids = findNotDone(exp_wce_ad_ranef_ped[,1]),
-           reg=reg, resources=list(partition="bcam-exclusive", walltime=60*8, ntasks=1, ncpus=4, memory=500)) 
-waitForJobs()
+# ## PAM WCE Adaptive splines RANEF for WCE RANEF survival data
+# exp_wce_ad_ranef_ped <- findExperiments(
+#   prob.name = paste0("sim_wce_ranef_ped", ihshape, "_", name_true_sigma),
+#   algo.name = "wce_ranef_ad_ped")
+# 
+# # t1_pam_wce_ad_ranef1 <- testJob(id = exp_wce_ad_ranef_ped1[1,1])
+# submitJobs(ids = findNotDone(exp_wce_ad_ranef_ped[,1]),
+#            reg=reg, resources=list(partition="bcam-exclusive", walltime=60*8, ntasks=1, ncpus=4, memory=500)) 
+# waitForJobs()
 

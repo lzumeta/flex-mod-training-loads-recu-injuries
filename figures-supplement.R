@@ -33,27 +33,27 @@ setEPS()
 postscript(file = paste0(output_path, "/weight_functions.eps"), width = 12, height = 7.6)
 par(mfrow = c(2,3), cex = 1.1)
 lags <- 1:40
-plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      xlab = expression('lag: t - t'[z]),  ylab = expression('h(t - t'[z]*')'),
      main = "Exponential decay")
 mtext("(a)", 1, 3, adj = 0)
-plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Bi-linear")
 mtext("(b)", 1, 3, adj = 0)
-plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Early peak")
 mtext("(c)", 1, 3, adj = 0)
-plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Inverted U")
 mtext("(d)", 1, 3, adj = 0)
-plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Constant")
 mtext("(e)", 1, 3, adj = 0)
-plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Hat")
 mtext("(f)", 1, 3, adj = 0)
@@ -65,42 +65,42 @@ lags <- 1:40
 setEPS()
 postscript(file = paste0(output_path, "weight_function_a.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(a) Exponential decay")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_b.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(b) Bi-linear")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_c.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(c) Early peak")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_d.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(d) Inverted U")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_e.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(e) Constant")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_f.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.053),
+plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(f) Hat")
 dev.off()
@@ -124,8 +124,8 @@ for (h in 1:6) {
         bind_rows(avg_simresults(res_pamm_wce_ped, name = model_label))
       
       pxnsim_name <- paste0("pxnsim", i, j)
-      assign(pxnsim_name, gg_pamm_xslice_nsims(res_pamm_wce_ped, model_name = model_label) + 
-               ylim(-0.02, 0.07))  ## this limits could be others (i.e. needs to be generalized)
+      assign(pxnsim_name, gg_pamm_xslice_nsims(res_pamm_wce_ped, model_name = model_label, sampled = T) + 
+               ylim(-0.03, 0.06))  ## this limits could be others (i.e. needs to be generalized)
     }
     
     avg_simresults_df <- unique(avg_simresults_df)

@@ -23,7 +23,7 @@ dir.create(input_path, showWarnings = FALSE)
 ## additional additive, non-linear component of the log-baseline hazard
 f0 <- function(t) {
   t <- (t) / max(t) * 3/2*pi
-  (-1*sin(t))-0.5
+  (-1*sin(t)) - 0.5
 }
 # FUNCTION TO COMPUTE THE CUMULATIVE EFFECT GIVEN AN EXPOSURE HISTORY
 fcumeff <- function(hist, lag, fun) sum(do.call(fun, list(hist, lag)))
@@ -31,7 +31,7 @@ fcumeff <- function(hist, lag, fun) sum(do.call(fun, list(hist, lag)))
 # REAL TEMPERATURE SERIES, STANDARDIZED IN 0-10
 # chicagoNMMAPS data from dlnm package
 xz <- chicagoNMMAPS$temp
-xz <- (xz-min(xz))/diff(range(xz))*10
+xz <- (xz - min(xz))/diff(range(xz))*10
 
 ## set parameters
 # number of exposures per subject
@@ -43,7 +43,7 @@ l <- 500
 # sample exposures from the empirical distribution of x
 set.seed(16)
 x <- sample(xz, nz*l, replace = T)
-## 
+##
 
 ## id and time variables
 time <- rep(1:nz, l)
@@ -56,20 +56,20 @@ x_list   <- split(x, id)
 # model the hazard, i.e. t-tz = 1
 # lag = 40 means exposure was recorded 40 days before the time at which we want
 # to model the hazard, i.e. t-tz = 40
-lag_list <- lapply(x_list, Lag, 0:40) 
+lag_list <- lapply(x_list, Lag, 0:40)
 
 ## nl variable
-## number of events per subject (fixed) 
+## number of events per subject (fixed)
 ## drawn from rtpois with lower a = 0 truncation point, so nl is a realization
 ## of a poisson (fixed in simulations) random variable, Y, conditional on the
 ## event Y > a = 0
 set.seed(16)
 nl <- rtpois(l, lambda = 1.5, a = 0, b = Inf)
 # summary(nl)
-## N, total number of observations 
+## N, total number of observations
 ## where observations consist of subjects under risk of an event i
-N  <- sum(nl)                
-nl_rep <- rep(nl, each = 40) ## duplicate nl nz=40 times (for Xdf) 
+N  <- sum(nl)  ## N = 961
+nl_rep <- rep(nl, each = 40) ## duplicate nl nz=80 times (for Xdf)
 
 
 
@@ -84,7 +84,7 @@ hshape1_ztz <- function(x, lag) x*hshape1(lag)
 # max(lag) observations at each time-point at which we want to model the hazard.
 # The cumulative effect is the sum over all 40 partial effects, i.e.
 # h(t-tz=1, z[tz=t-1]) + h(t-tz=2, z[tz=t-2]) + ... + h(t-tz=40, z[tz=t-40])
-eff_vec  <- sapply(lag_list, apply, 1, fcumeff, 0:40, "hshape1_ztz") 
+eff_vec  <- sapply(lag_list, apply, 1, fcumeff, 0:40, "hshape1_ztz")
 
 ## create full data set (observations for each subject and time-point)
 Xdf <- data.frame(id = id, time = time, eta_wce = as.vector(eff_vec))
@@ -114,14 +114,14 @@ Xdf$tend   <- Xdf$tstart + 1
 Xdf$eta   <- -7.7 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
-## since (we want the survival times to be approx in the range [0, 40]). 
+## since (we want the survival times to be approx in the range [0, 40]).
 ## Upon this will depend the censorship
 # rexp(1, rate=exp(-4.2))
 # rexp(1, rate=exp(-0.6))
 # summary(Xdf$eta)
 
 #### create new data for prediction + truth column
-ndf <- expand.grid(Z = seq(0, 10, by = 0.25), tz_df = 0:40) 
+ndf <- expand.grid(Z = seq(0, 10, by = 0.25), tz_df = 0:40)
 # any time will do (later we only use coefficients for hshape1_ztz estimation)
 ndf$tend  <- 20
 ndf$LL    <- 1
@@ -183,7 +183,7 @@ Xdf$tend   <- Xdf$tstart + 1
 Xdf$eta   <- -5 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
-## since (we want the survival times to be approx in the range [0, 40]). 
+## since (we want the survival times to be approx in the range [0, 40]).
 ## Upon this will depend the censorship
 # rexp(1, rate=exp(-4.2))
 # rexp(1, rate=exp(-0.6))
@@ -249,10 +249,10 @@ Xdf$tstart <- Xdf$time
 Xdf$tend   <- Xdf$tstart + 1
 ## calculate linear predictor using:
 ## cumulative effect + intercept + smooth baseline + random effect
-Xdf$eta   <- -5 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
+Xdf$eta   <- -4 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
-## since (we want the survival times to be approx in the range [0, 40]). 
+## since (we want the survival times to be approx in the range [0, 40]).
 ## Upon this will depend the censorship
 # rexp(1, rate=exp(-4.2))
 # rexp(1, rate=exp(-0.6))
@@ -321,7 +321,7 @@ Xdf$tend   <- Xdf$tstart + 1
 Xdf$eta   <- -5.7 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
-## since (we want the survival times to be approx in the range [0, 40]). 
+## since (we want the survival times to be approx in the range [0, 40]).
 ## Upon this will depend the censorship
 # rexp(1, rate=exp(-4.2))
 # rexp(1, rate=exp(-0.6))
@@ -390,7 +390,7 @@ Xdf$tend   <- Xdf$tstart + 1
 Xdf$eta   <- -5 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
-## since (we want the survival times to be approx in the range [0, 40]). 
+## since (we want the survival times to be approx in the range [0, 40]).
 ## Upon this will depend the censorship
 # rexp(1, rate=exp(-4.2))
 # rexp(1, rate=exp(-0.6))
@@ -459,7 +459,7 @@ Xdf$tend   <- Xdf$tstart + 1
 Xdf$eta   <- -6 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
-## since (we want the survival times to be approx in the range [0, 40]). 
+## since (we want the survival times to be approx in the range [0, 40]).
 ## Upon this will depend the censorship
 # rexp(1, rate=exp(-4.2))
 # rexp(1, rate=exp(-0.6))
@@ -490,14 +490,14 @@ saveRDS(wce6_ranef_ped_static, paste0(input_path, "static_part_ped6_", name_true
 #     geom_contour(aes(z = .data$truth)) +
 #     scale_fill_gradient2(low = "firebrick", high = "steelblue")
 # }
-# 
+#
 # for (i in 1:6) {
 #   data <- readRDS(paste0("input/static_part_ped", i,"_high.Rds"))
 #   ndf <- data$ndf
 #   name_p <- paste0("p", i)
 #   assign(name_p, plot_wce_cumueff(ndf))
 # }
-# 
+#
 # theme_set(theme_bw())
 # p_all <- gridExtra::grid.arrange(p1, p2, p3, p4, p5, p6, nrow = 2, ncol = 3)
 # ggsave("./true_WCE_cumu_effects.pdf", plot = p_all, width = 12, height = 7.6)
