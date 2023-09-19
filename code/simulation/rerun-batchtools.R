@@ -13,7 +13,7 @@ if (batchh) {
 # set to value below for full replication
 n_simA <- 500
 
-true_sigmas      <- c(0.05, 0.5, 1) ## c(0.05, 0.2, 0.5)
+true_sigmas      <- c(0.05, 0.5, 1)
 name_true_sigmas <- c("verylow", "low", "high")
 hshapes          <- paste0("hshape", 1:6)
 ihshapes         <- 1:6

@@ -12,7 +12,7 @@ library(stringr)
 library(patchwork)
 
 sim_path    <- "code/simulation/"
-output_path <- "figures/supplement/"
+output_path <- "figures/supplement_new/"
 dir.create(output_path, showWarnings = FALSE)
 
 
@@ -22,7 +22,6 @@ source(paste0(sim_path, "eval-utils.R"))
 true_sigmas      <- c(0.05, 0.5, 1)
 name_true_sigmas <- c("verylow", "low", "high")
 model_names      <- c("", "constrained_", "ridge_")
-model_labels     <- c("PAMM WCE\n", "PAMM WCE\nCONSTR.", "PAMM WCE\nRIDGE")
 h_labels         <- c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)")
 
 reg_path <- paste0(sim_path, "/registry/wce-ranef-surv-registry_")
@@ -33,27 +32,27 @@ setEPS()
 postscript(file = paste0(output_path, "/weight_functions.eps"), width = 12, height = 7.6)
 par(mfrow = c(2,3), cex = 1.1)
 lags <- 1:40
-plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]),  ylab = expression('h(t - t'[z]*')'),
      main = "Exponential decay")
 mtext("(a)", 1, 3, adj = 0)
-plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Bi-linear")
 mtext("(b)", 1, 3, adj = 0)
-plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Early peak")
 mtext("(c)", 1, 3, adj = 0)
-plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Inverted U")
 mtext("(d)", 1, 3, adj = 0)
-plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Constant")
 mtext("(e)", 1, 3, adj = 0)
-plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Hat")
 mtext("(f)", 1, 3, adj = 0)
@@ -106,6 +105,7 @@ plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
 dev.off()
 
 # Partial effects (ALL) ---------------------------------------------------
+model_labels     <- c("Uncons.", "Constr.", "Ridge")
 for (h in 1:6) {
   reg <- loadRegistry(paste0(reg_path, "hshape", h, "/"), work.dir = getwd())
   h_label <- h_labels[[h]]
@@ -141,7 +141,7 @@ for (h in 1:6) {
                               top = grid::textGrob(bquote(.(h_label)*" h"[.(h)]*"(t-t"[z]*")*z(t"[z]*")"), 
                                                    gp=grid::gpar(fontsize=rel(18), fontface = "bold")),
                               padding = unit(1.5, "line"))
-
+  
   
   ggsave(paste0(output_path, "slice_xnsim_", h,".pdf"), plot = pslicexnsim, device = "pdf", width = 15, height = 13.5)
   ggsave(paste0(output_path, "slice_xnsim_", h,".eps"), plot = pslicexnsim, device = cairo_ps, width = 15, height = 13.5)
@@ -158,6 +158,7 @@ simsummary_df <- data.frame(data_generation1 = vector("character", 0L),
                             mse_sigma        = vector("double", 0L),
                             coverage_h       = vector("double", 0L),
                             job.id           = vector("double", 0L))
+model_labels     <- c("Uncons.", "Constr.", "Ridge") 
 for (h in 1:6) {
   reg <- loadRegistry(paste0(reg_path, "hshape", h, "/"), work.dir = getwd())
   h_label <- h_labels[[h]]
@@ -176,7 +177,7 @@ for (h in 1:6) {
       sim_res <- simsummary_pamm_wce(res_pamm_wce_ped, true_sigma)
       sim_res_aux <- data.frame(data_generation1 = paste0("hshape*ztz ", h),
                                 data_generation2 = paste0("$\\sigma_b$ = ", true_sigma),
-                                data_generation3 = paste0("model: ", model_label))
+                                data_generation3 = model_label)
       simsummary_df <- bind_rows(simsummary_df,
                                  bind_cols(sim_res_aux, sim_res))
     }
@@ -190,26 +191,29 @@ simsummary_df <- simsummary_df |>
                                        "hshape*ztz 3" = "(c) early peak",
                                        "hshape*ztz 4" = "(d) inverted U",
                                        "hshape*ztz 5" = "(e) constant",
-                                       "hshape*ztz 6" = "(f) hat"))
+                                       "hshape*ztz 6" = "(f) hat"),
+         data_generation3 = factor(data_generation3, 
+                                   levels = c("Uncons.", "Constr.", "Ridge"), 
+                                   labels = c("Uncons.", "Constr.", "Ridge")))
 
 simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = RMSE_h, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
-  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "") +
+  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
   xlab("Heterogeneity level") + ylab("RMSE (h)")
-  # ggtitle("Boxplots of RMSE (h) in each scenario setting")
+# ggtitle("Boxplots of RMSE (h) in each scenario setting")
 ggsave(paste0(output_path, "p_res_boxplot_h.eps"), plot = last_plot(),   device = cairo_ps(), width = 12, height = 6.4)
 
 simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = mse_sigma, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
-  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "") +
+  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
   xlab("Heterogeneity level") + ylab(bquote("Squared Error ("*sigma[b]*")"))
-  # ggtitle("Boxplots of Squared Error (sigma) in each scenario setting")
+# ggtitle("Boxplots of Squared Error (sigma) in each scenario setting")
 ggsave(paste0(output_path, "p_res_boxplot_sigma.eps"), plot = last_plot(), device = cairo_ps(), width = 12, height = 6.4)
 
 simsummary_df |> 
@@ -217,10 +221,10 @@ simsummary_df |>
   geom_boxplot() + 
   geom_hline(yintercept = 0.95) +
   facet_wrap(~data_generation1_new) +
-  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "") +
+  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
   xlab("Heterogeneity level") + ylab("Coverage (h)")
-  # ggtitle("Boxplots of Coverage (h) in each scenario setting")
+# ggtitle("Boxplots of Coverage (h) in each scenario setting")
 ggsave(paste0(output_path, "p_res_boxplot_cov_h.eps"), plot = last_plot(), device = cairo_ps(), width = 12, height = 6.4)
 
 

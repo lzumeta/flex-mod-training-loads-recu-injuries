@@ -101,7 +101,7 @@ Xdf$time_df <- matrix(Xdf$time, nrow = nrow(Xdf), ncol = nz)
 diff_df     <- (Xdf$time_df - Xdf$tz_df)
 Xdf$LL      <- ((diff_df >= 0) & (diff_df <= 40))*1
 set.seed(16)
-Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = 80)
+Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = nz)
 ## follow up starts after 40 days of exposure, such that every subject has
 ## complete exposure history of 40 exposures at the beginning of the follow-up
 Xdf$time <- Xdf$time - 41
@@ -169,7 +169,7 @@ Xdf$time_df <- matrix(Xdf$time, nrow = nrow(Xdf), ncol = nz)
 diff_df     <- (Xdf$time_df - Xdf$tz_df)
 Xdf$LL      <- ((diff_df >= 0) & (diff_df <= 40))*1
 set.seed(16)
-Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = 80)
+Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = nz)
 
 ## follow up starts after 40 days of exposure, such that every subject has
 ## complete exposure history of 40 exposures at the beginning of the follow-up
@@ -238,7 +238,7 @@ Xdf$time_df <- matrix(Xdf$time, nrow = nrow(Xdf), ncol = nz)
 diff_df     <- (Xdf$time_df - Xdf$tz_df)
 Xdf$LL      <- ((diff_df >= 0) & (diff_df <= 40))*1
 set.seed(16)
-Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = 80)
+Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = nz)
 
 ## follow up starts after 40 days of exposure, such that every subject has
 ## complete exposure history of 40 exposures at the beginning of the follow-up
@@ -307,7 +307,7 @@ Xdf$time_df <- matrix(Xdf$time, nrow = nrow(Xdf), ncol = nz)
 diff_df     <- (Xdf$time_df - Xdf$tz_df)
 Xdf$LL      <- ((diff_df >= 0) & (diff_df <= 40))*1
 set.seed(16)
-Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = 80)
+Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = nz)
 
 ## follow up starts after 40 days of exposure, such that every subject has
 ## complete exposure history of 40 exposures at the beginning of the follow-up
@@ -376,7 +376,7 @@ Xdf$time_df <- matrix(Xdf$time, nrow = nrow(Xdf), ncol = nz)
 diff_df     <- (Xdf$time_df - Xdf$tz_df)
 Xdf$LL      <- ((diff_df >= 0) & (diff_df <= 40))*1
 set.seed(16)
-Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = 80)
+Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = nz)
 
 ## follow up starts after 40 days of exposure, such that every subject has
 ## complete exposure history of 40 exposures at the beginning of the follow-up
@@ -445,7 +445,7 @@ Xdf$time_df <- matrix(Xdf$time, nrow = nrow(Xdf), ncol = nz)
 diff_df     <- (Xdf$time_df - Xdf$tz_df)
 Xdf$LL      <- ((diff_df >= 0) & (diff_df <= 40))*1
 set.seed(16)
-Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = 80)
+Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = nz)
 
 ## follow up starts after 40 days of exposure, such that every subject has
 ## complete exposure history of 40 exposures at the beginning of the follow-up
