@@ -30,7 +30,7 @@ theme_set(theme_bw() +
 true_sigmas      <- c(0.05, 0.5, 1)
 name_true_sigmas <- c("verylow", "low", "high")
 model_names      <- c("", "constrained_", "ridge_")
-model_labels     <- c("PAMM WCE\n", "PAMM WCE\nCONSTR.", "PAMM WCE\nRIDGE")
+model_labels     <- c("Uncons.", "Constr.", "Ridge")
 h_labels         <- c("(a)", "(b)", "(c)", "(d)", "(e)", "(f)")
 
 reg_path <- paste0(sim_path, "/registry/wce-ranef-surv-registry_")
@@ -45,7 +45,7 @@ simsummary_avg_df <- data.frame(data_generation1 = vector("character", 0L),
                                 mRMSE_h          = vector("double", 0L),
                                 RMSE_sigma      = vector("double", 0L),
                                 mcoverage_h      = vector("double", 0L))
-model_labels     <- c("PAMM WCE", "PAMM WCE CONSTR.", "PAMM WCE RIDGE")
+model_labels     <- c("Uncons.", "Constr.", "Ridge")
 for (h in 1:6) {
   reg <- loadRegistry(paste0(reg_path, "hshape", h, "/"), work.dir = getwd())
   h_label <- h_labels[[h]]
@@ -94,7 +94,7 @@ writeLines(tab, con = paste0(output_path, "simsummary_tab.tex"))
 # Table (BIC, Dev. Explained) ---------------------------------------------
 ## initialize an empty list
 aic_df <- data.frame()
-model_labels     <- c("PAMM_WCE", "PAMM_WCE_CONSTR.", "PAMM_WCE_RIDGE")
+model_labels     <- c("Uncons.", "Constr.", "Ridge")
 for (h in 1:6) {
   reg <- loadRegistry(paste0(reg_path, "hshape", h, "/"), work.dir = getwd())
   h_label <- h_labels[[h]]
