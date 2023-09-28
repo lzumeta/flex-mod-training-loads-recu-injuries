@@ -108,6 +108,7 @@ gg_pamm_xslice_nsims <- function(res_sim_df, xs = c(1), model_name,
 
 simsummary_avg_pamm_wce  <- function(res_sim_df, true_sigma) {
   summary_res <- res_sim_df |>
+    filter(x == 1) |> 
     mutate(mse       = (fit - truth)^2,
            coverage  = (truth <= fit + qnorm(0.975)*se) & (truth >= fit - qnorm(0.975)*se)) |>
     group_by(job.id) |>
@@ -134,11 +135,12 @@ simsummary_avg_pamm_wce  <- function(res_sim_df, true_sigma) {
 
 simsummary_pamm_wce  <- function(res_sim_df, true_sigma) {
   summary_res <- res_sim_df |>
+    filter(x == 1) |> 
     mutate(mse      = (fit - truth)^2,
            coverage = (truth <= fit + qnorm(0.975)*se) & (truth >= fit - qnorm(0.975)*se)) |>
     group_by(job.id) |>
     summarise(RMSE_h    = sqrt(mean(mse)),
-              coverage_h = sum(coverage)/n()) |>
+              coverage_h = sum(coverage)/n()) |> ## mean(coverage)
     ungroup()
   summary_res_aux <- res_sim_df |>
     select(job.id, sigma_est) |> #, sigma_cilo, sigma_ciup) |> 

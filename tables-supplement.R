@@ -75,13 +75,13 @@ for (h in 1:6) {
 
 ## LaTeX table with simulation results 
 tab <- simsummary_avg_df |> 
-  mutate(data_generation3 = case_when(data_generation3 == "model: PAMM WCE" ~ "PAMM WCE",
-                                      data_generation3 == "model: PAMM WCE CONSTR." ~ "PAMM WCE Constr.",
-                                      data_generation3 == "model: PAMM WCE RIDGE" ~ "PAMM WCE Ridge"
+  mutate(data_generation3 = case_when(data_generation3 == "model: Uncons." ~ "\\textit{Uncons.}",
+                                      data_generation3 == "model: Constr." ~ "\\textit{Constr.}",
+                                      data_generation3 == "model: Ridge" ~ "\\textit{Ridge}"
   )) |> 
   kbl(booktabs = T, align = c("l", "l", "l", "c", "c", "c", "c"),
       caption = paste0("Simulation results for $N_{\\text{sim}} = ", 
-                       n_simA, "$ in each scenario setting in terms of mean RMSE and mean coverage of $h_{t, t_z, z(t_z)}$ and RMSE of $\\sigma_b$\\label{tab:simres}"),
+                       n_simA, "$ in each scenario setting in terms of mean RMSE and mean coverage ($\\alpha = 0.05$) of $h_{t, t_z, z(t_z)}$ and RMSE of $\\sigma_b$\\label{tab:simres}"),
       col.names = c("WCE shape", "Heterogeneity", " ", "$h_{t, t_z, z(t_z)}$", "$\\sigma_b$", "$h_{t, t_z, z(t_z)}$"),
       format = "latex", digits = 3, escape = FALSE) |> 
   kable_styling() |> 
@@ -94,7 +94,7 @@ writeLines(tab, con = paste0(output_path, "simsummary_tab.tex"))
 # Table (BIC, Dev. Explained) ---------------------------------------------
 ## initialize an empty list
 aic_df <- data.frame()
-model_labels     <- c("Uncons.", "Constr.", "Ridge")
+model_labels <- c("PAMM_WCE", "PAMM_WCE_CONSTR.", "PAMM_WCE_RIDGE")
 for (h in 1:6) {
   reg <- loadRegistry(paste0(reg_path, "hshape", h, "/"), work.dir = getwd())
   h_label <- h_labels[[h]]
@@ -140,8 +140,8 @@ tab <- aic_df |>
       caption = paste0("Frequency of the models that yield best BIC and Deviance explained in each replication of the simulation, $N_{\\text{sim}}$ = ",
                        n_simA, ", across all scenarios\\label{tab:bestmodels_small}."),
       col.names = c("WCE shape", "Heterogeneity",
-                    "Lowest BIC PAMM (\\%)", "Lowest BIC PAMM Constr. (\\%)", "Lowest BIC PAMM Ridge (\\%)", 
-                    "Largest Dev. PAMM (\\%)", "Largest Dev. PAMM Constr. (\\%)", "Largest Dev. PAMM Ridge (\\%)"),
+                    "Lowest BIC  \\hspace{1cm} \\textit{Uncons.} (\\%)", "Lowest BIC \\hspace{1cm} \\textit{Constr.} (\\%)", "Lowest BIC \\hspace{1cm} \\textit{Ridge} (\\%)", 
+                    "Largest Dev. \\hspace{1cm} \\textit{Uncons.} (\\%)", "Largest Dev. \\hspace{1cm} \\textit{Constr.} (\\%)", "Largest Dev. \\hspace{1cm} \\textit{Ridge} (\\%)"),
       format = "latex", digits = 3, escape = FALSE) |> 
   kable_styling() |> 
   add_header_above(c("Data generation mechanism" = 2, " " = 6))

@@ -12,7 +12,7 @@ library(stringr)
 library(patchwork)
 
 sim_path    <- "code/simulation/"
-output_path <- "figures/supplement_new/"
+output_path <- "figures/supplement/"
 dir.create(output_path, showWarnings = FALSE)
 
 
@@ -64,42 +64,42 @@ lags <- 1:40
 setEPS()
 postscript(file = paste0(output_path, "weight_function_a.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(a) Exponential decay")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_b.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(b) Bi-linear")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_c.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(c) Early peak")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_d.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(d) Inverted U")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_e.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(e) Constant")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_f.eps"), width = 6, height = 5)
 par(cex.main = 2.5)
-plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.046),
+plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(f) Hat")
 dev.off()
@@ -125,7 +125,7 @@ for (h in 1:6) {
       
       pxnsim_name <- paste0("pxnsim", i, j)
       assign(pxnsim_name, gg_pamm_xslice_nsims(res_pamm_wce_ped, model_name = model_label, sampled = T) + 
-               ylim(-0.03, 0.06))  ## this limits could be others (i.e. needs to be generalized)
+               ylim(-0.03, 0.1))  ## these limits could be others (i.e. needs to be generalized)
     }
     
     avg_simresults_df <- unique(avg_simresults_df)

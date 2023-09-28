@@ -56,7 +56,7 @@ for (h in c(1:4)) { ## shapes: exponential decay, bi-linear, early peak and cons
     
     pxnsim_name <- paste0("pxnsim", h, j)
     assign(pxnsim_name, gg_pamm_xslice_nsims(res_pamm_wce_ped, model_name = model_label, sampled = TRUE) + 
-             ylim(-0.02, 0.07))  ## this should change..
+             ylim(-0.02, 0.1))  ## this should change..
   }
 }
 
