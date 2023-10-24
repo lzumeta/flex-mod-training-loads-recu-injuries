@@ -6,7 +6,7 @@ This is the accompanying code repository for the research paper:
 
 
 ## Session info
-Our R session information is given below:
+The R session information is given below:
 ```
 sessionInfo()
 R version 4.3.1 (2023-06-16)
