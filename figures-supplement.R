@@ -125,7 +125,10 @@ for (h in 1:6) {
       
       pxnsim_name <- paste0("pxnsim", i, j)
       assign(pxnsim_name, gg_pamm_xslice_nsims(res_pamm_wce_ped, model_name = model_label, sampled = T) + 
-               ylim(-0.03, 0.1))  ## these limits could be others (i.e. needs to be generalized)
+               ylim(-0.03, 0.1) +   ## these limits could be others (i.e. needs to be generalized)
+               theme(axis.text = element_text(size = rel(1.6)),
+                     axis.title = element_text(size = rel(1.8)),
+                     legend.text = element_text(size = rel(1.1))))
     }
     
     avg_simresults_df <- unique(avg_simresults_df)
@@ -135,16 +138,16 @@ for (h in 1:6) {
                                     get(paste0("pxnsim", i, "3")), ncol = 1))
   }
   
-  pslicexnsim <- grid.arrange(arrangeGrob(pxnsim1, top = grid::textGrob(expression(sigma[b]*'= 0.05'), gp = grid::gpar(fontsize = rel(16)))),
-                              arrangeGrob(pxnsim2, top = grid::textGrob(expression(sigma[b]*'= 0.5'), gp = grid::gpar(fontsize = rel(16)))),
-                              arrangeGrob(pxnsim3, top = grid::textGrob(expression(sigma[b]*'= 1'), gp = grid::gpar(fontsize = rel(16)))), ncol = 3, 
+  pslicexnsim <- grid.arrange(arrangeGrob(pxnsim1, top = grid::textGrob(expression(sigma[b]*'= 0.05'), gp = grid::gpar(fontsize = rel(24)))),
+                              arrangeGrob(pxnsim2, top = grid::textGrob(expression(sigma[b]*'= 0.5'), gp = grid::gpar(fontsize = rel(24)))),
+                              arrangeGrob(pxnsim3, top = grid::textGrob(expression(sigma[b]*'= 1'), gp = grid::gpar(fontsize = rel(24)))), ncol = 3, 
                               top = grid::textGrob(bquote(.(h_label)*" h"[.(h)]*"(t-t"[z]*")*z(t"[z]*")"), 
-                                                   gp=grid::gpar(fontsize=rel(18), fontface = "bold")),
-                              padding = unit(1.5, "line"))
+                                                   gp=grid::gpar(fontsize=rel(28), fontface = "bold")),
+                              padding = unit(4, "line"))
   
   
-  ggsave(paste0(output_path, "slice_xnsim_", h,".pdf"), plot = pslicexnsim, device = "pdf", width = 15, height = 13.5)
-  ggsave(paste0(output_path, "slice_xnsim_", h,".eps"), plot = pslicexnsim, device = cairo_ps, width = 15, height = 13.5)
+  ggsave(paste0(output_path, "slice_xnsim_", h,".pdf"), plot = pslicexnsim, device = "pdf", width = 15, height = 12.8)
+  ggsave(paste0(output_path, "slice_xnsim_", h,".eps"), plot = pslicexnsim, device = cairo_ps, width = 15, height = 12.8)
 }
 
 
@@ -202,9 +205,14 @@ simsummary_df |>
   facet_wrap(~data_generation1_new) +
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
-  xlab("Heterogeneity level") + ylab("RMSE (h)")
+  xlab("Heterogeneity level") + ylab("RMSE (h)") +
+  theme(axis.text = element_text(size = rel(2)),
+        axis.title = element_text(size = rel(2.4)),
+        legend.title = element_text(size = rel(2.4)),
+        legend.text = element_text(size = rel(2.4)),
+        strip.text = element_text(size = rel(2)))
 # ggtitle("Boxplots of RMSE (h) in each scenario setting")
-ggsave(paste0(output_path, "p_res_boxplot_h.eps"), plot = last_plot(),   device = cairo_ps(), width = 12, height = 6.4)
+ggsave(paste0(output_path, "p_res_boxplot_h.eps"), plot = last_plot(),   device = cairo_ps(), width = 18, height = 9.6)
 
 simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = mse_sigma, fill = data_generation3)) +
@@ -212,9 +220,14 @@ simsummary_df |>
   facet_wrap(~data_generation1_new) +
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
-  xlab("Heterogeneity level") + ylab(bquote("Squared Error ("*sigma[b]*")"))
+  xlab("Heterogeneity level") + ylab(bquote("Squared Error ("*sigma[b]*")")) +
+  theme(axis.text = element_text(size = rel(2)),
+        axis.title = element_text(size = rel(2.4)),
+        legend.title = element_text(size = rel(2.4)),
+        legend.text = element_text(size = rel(2.4)),
+        strip.text = element_text(size = rel(2)))
 # ggtitle("Boxplots of Squared Error (sigma) in each scenario setting")
-ggsave(paste0(output_path, "p_res_boxplot_sigma.eps"), plot = last_plot(), device = cairo_ps(), width = 12, height = 6.4)
+ggsave(paste0(output_path, "p_res_boxplot_sigma.eps"), plot = last_plot(), device = cairo_ps(), width = 18, height = 9.6)
 
 simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = coverage_h, fill = data_generation3)) +
@@ -223,9 +236,14 @@ simsummary_df |>
   facet_wrap(~data_generation1_new) +
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
-  xlab("Heterogeneity level") + ylab("Coverage (h)")
+  xlab("Heterogeneity level") + ylab("Coverage (h)") +
+  theme(axis.text = element_text(size = rel(2)),
+        axis.title = element_text(size = rel(2.4)),
+        legend.title = element_text(size = rel(2.4)),
+        legend.text = element_text(size = rel(2.4)),
+        strip.text = element_text(size = rel(2)))
 # ggtitle("Boxplots of Coverage (h) in each scenario setting")
-ggsave(paste0(output_path, "p_res_boxplot_cov_h.eps"), plot = last_plot(), device = cairo_ps(), width = 12, height = 6.4)
+ggsave(paste0(output_path, "p_res_boxplot_cov_h.eps"), plot = last_plot(), device = cairo_ps(), width = 18, height = 9.6)
 
 
 
