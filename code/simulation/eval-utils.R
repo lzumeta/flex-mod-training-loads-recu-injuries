@@ -101,7 +101,7 @@ gg_pamm_xslice_nsims <- function(res_sim_df, xs = c(1), model_name,
                                          labels = c("Truth", model_name, "Mean"))} +
     {if (band_curves) scale_color_manual(name = "", values = c("black", "blue", "grey", "red"),
                                          labels = c("Truth","2.5% and 97.5% quant.", model_name, "Mean"))} +
-    theme(legend.position = c(0.79, 0.88),#c(0.8, 0.9), 
+    theme(legend.position = c(0.81, 0.88),#c(0.8, 0.9), 
           legend.background = element_blank())
 }
 

@@ -20,12 +20,12 @@ dir.create(output_path, showWarnings = FALSE)
 source(paste0(sim_path, "eval-utils.R"))
 theme_set(theme_bw() +
             theme(
-              axis.title   = element_text(size = rel(1.3)),
+              axis.title   = element_text(size = rel(1.5)),
               axis.text    = element_text(size = rel(1.2)),
-              legend.text  = element_text(size = rel(0.8)),
-              legend.title = element_text(size = rel(1.1)),
-              strip.text   = element_text(size = rel(1.2)),
-              plot.title = element_text(hjust = .6, size = rel(1.4), face = "italic")))
+              legend.text  = element_text(size = rel(0.95)),
+              legend.title = element_text(size = rel(1.3)),
+              strip.text   = element_text(size = rel(1.3)),
+              plot.title = element_text(hjust = .7, size = rel(1.5), face = "italic")))
 true_sigmas      <- c(0.05, 0.5, 1)
 name_true_sigmas <- c("verylow", "low", "high")
 model_names      <- c("", "constrained_", "ridge_")

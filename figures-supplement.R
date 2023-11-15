@@ -30,32 +30,32 @@ reg_path <- paste0(sim_path, "/registry/wce-ranef-surv-registry_")
 # Weight functions (ALL) --------------------------------------------------
 setEPS()
 postscript(file = paste0(output_path, "/weight_functions.eps"), width = 12, height = 7.6)
-par(mfrow = c(2,3), cex = 1.1)
+par(mfrow = c(2,3), cex = 1, cex.axis = 1.2, cex.main = 1.4, cex.lab = 1.5, mar = c(5, 5.5, 4, 2))
 lags <- 1:40
 plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]),  ylab = expression('h(t - t'[z]*')'),
-     main = "Exponential decay")
-mtext("(a)", 1, 3, adj = 0)
+     main = "    Exponential decay")
+mtext("(a)", 3, 2, adj = 0, cex = 1.5, font = 2)
 plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Bi-linear")
-mtext("(b)", 1, 3, adj = 0)
+mtext("(b)", 3, 2, adj = 0, cex = 1.5,  font = 2)
 plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Early peak")
-mtext("(c)", 1, 3, adj = 0)
+mtext("(c)", 3, 2, adj = 0, cex = 1.5, font = 2)
 plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Inverted U")
-mtext("(d)", 1, 3, adj = 0)
+mtext("(d)", 3, 2, adj = 0, cex = 1.5, font = 2)
 plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Constant")
-mtext("(e)", 1, 3, adj = 0)
+mtext("(e)", 3, 2, adj = 0, cex = 1.5, font = 2)
 plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      xlab = expression('lag: t - t'[z]), ylab = expression('h(t - t'[z]*')'),
      main = "Hat")
-mtext("(f)", 1, 3, adj = 0)
+mtext("(f)", 3, 2, adj = 0, cex = 1.5, font = 2)
 dev.off()
 
 
