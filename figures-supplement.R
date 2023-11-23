@@ -63,42 +63,42 @@ dev.off()
 lags <- 1:40
 setEPS()
 postscript(file = paste0(output_path, "weight_function_a.eps"), width = 6, height = 5)
-par(cex.main = 2.5)
+par(cex.main = 3.28)
 plot(hshape1(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(a) Exponential decay")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_b.eps"), width = 6, height = 5)
-par(cex.main = 2.5)
+par(cex.main = 3.5)
 plot(hshape2(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(b) Bi-linear")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_c.eps"), width = 6, height = 5)
-par(cex.main = 2.5)
+par(cex.main = 3.5)
 plot(hshape3(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(c) Early peak")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_d.eps"), width = 6, height = 5)
-par(cex.main = 2.5)
+par(cex.main = 3.5)
 plot(hshape4(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(d) Inverted U")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_e.eps"), width = 6, height = 5)
-par(cex.main = 2.5)
+par(cex.main = 3.5)
 plot(hshape5(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(e) Constant")
 dev.off()
 setEPS()
 postscript(file = paste0(output_path, "weight_function_f.eps"), width = 6, height = 5)
-par(cex.main = 2.5)
+par(cex.main = 3.5)
 plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
      bty = "n", yaxt = "n", xaxt = "n", xlab = "", ylab = "",
      main = "(f) Hat")
