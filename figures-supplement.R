@@ -128,7 +128,7 @@ for (h in 1:6) {
                ylim(-0.03, 0.1) +   ## these limits could be others (i.e. needs to be generalized)
                theme(axis.text = element_text(size = rel(1.6)),
                      axis.title = element_text(size = rel(1.8)),
-                     legend.text = element_text(size = rel(1.1))))
+                     legend.text = ggtext::element_markdown(size = rel(1.1))))
     }
     
     avg_simresults_df <- unique(avg_simresults_df)
@@ -199,49 +199,46 @@ simsummary_df <- simsummary_df |>
                                    levels = c("Uncons.", "Constr.", "Ridge"), 
                                    labels = c("Uncons.", "Constr.", "Ridge")))
 
-simsummary_df |> 
+boxplot_theme <- function(my_gg) {
+  my_gg +
+  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
+    xlab("Heterogeneity level") + ylab("RMSE (h)") +
+    theme(axis.text = element_text(size = rel(2)),
+          axis.title = element_text(size = rel(2.9)),
+          legend.title = element_text(size = rel(2.9)),
+          legend.text = element_text(size = rel(2.9), face = "italic"),
+          strip.text = element_text(size = rel(2.2)))
+}
+
+
+p1 <- simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = RMSE_h, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
-  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
-  scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
-  xlab("Heterogeneity level") + ylab("RMSE (h)") +
-  theme(axis.text = element_text(size = rel(2)),
-        axis.title = element_text(size = rel(2.4)),
-        legend.title = element_text(size = rel(2.4)),
-        legend.text = element_text(size = rel(2.4)),
-        strip.text = element_text(size = rel(2)))
+  scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) 
+p1 |> boxplot_theme()
+
 # ggtitle("Boxplots of RMSE (h) in each scenario setting")
 ggsave(paste0(output_path, "p_res_boxplot_h.eps"), plot = last_plot(),   device = cairo_ps(), width = 18, height = 9.6)
 
-simsummary_df |> 
+p2 <- simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = mse_sigma, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
-  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
-  scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
-  xlab("Heterogeneity level") + ylab(bquote("Squared Error ("*sigma[b]*")")) +
-  theme(axis.text = element_text(size = rel(2)),
-        axis.title = element_text(size = rel(2.4)),
-        legend.title = element_text(size = rel(2.4)),
-        legend.text = element_text(size = rel(2.4)),
-        strip.text = element_text(size = rel(2)))
+  scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) 
+p2 |> boxplot_theme()
+
 # ggtitle("Boxplots of Squared Error (sigma) in each scenario setting")
 ggsave(paste0(output_path, "p_res_boxplot_sigma.eps"), plot = last_plot(), device = cairo_ps(), width = 18, height = 9.6)
 
-simsummary_df |> 
+p3 <- simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = coverage_h, fill = data_generation3)) +
   geom_boxplot() + 
   geom_hline(yintercept = 0.95) +
   facet_wrap(~data_generation1_new) +
-  scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
-  scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
-  xlab("Heterogeneity level") + ylab("Coverage (h)") +
-  theme(axis.text = element_text(size = rel(2)),
-        axis.title = element_text(size = rel(2.4)),
-        legend.title = element_text(size = rel(2.4)),
-        legend.text = element_text(size = rel(2.4)),
-        strip.text = element_text(size = rel(2)))
+  scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) 
+p3 |> boxplot_theme()
+
 # ggtitle("Boxplots of Coverage (h) in each scenario setting")
 ggsave(paste0(output_path, "p_res_boxplot_cov_h.eps"), plot = last_plot(), device = cairo_ps(), width = 18, height = 9.6)
 

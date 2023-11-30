@@ -23,8 +23,8 @@ theme_set(theme_bw() +
               axis.title   = element_text(size = rel(1.5)),
               axis.text    = element_text(size = rel(1.2)),
               legend.text  = element_text(size = rel(0.95)),
-              legend.title = element_text(size = rel(1.3)),
-              strip.text   = element_text(size = rel(1.3)),
+              legend.title = element_text(size = rel(1.9)),
+              strip.text   = element_text(size = rel(1.4)),
               plot.title = element_text(hjust = .7, size = rel(1.5), face = "italic")))
 true_sigmas      <- c(0.05, 0.5, 1)
 name_true_sigmas <- c("verylow", "low", "high")
@@ -125,8 +125,9 @@ p1 <- simsummary_df |>
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
   xlab("Heterogeneity level") + ylab("RMSE (h)") + 
-  theme(legend.text = element_text(size = rel(1.3)),
-        axis.text.x = element_text(size = rel(0.9)))
+  theme(legend.text = element_text(size = rel(1.8), face = "italic"),
+        axis.text.x = element_text(size = rel(0.9)),
+        axis.title  = element_text(size = rel(1.9)))
 
 p2 <- simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = mse_sigma, fill = data_generation3)) +
@@ -135,8 +136,9 @@ p2 <- simsummary_df |>
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
   xlab("Heterogeneity level") + ylab(expression("Squared Error ("*sigma[b]*")")) +
-  theme(legend.text = element_text(size = rel(1.3)),
-        axis.text.x = element_text(size = rel(0.9)))
+  theme(legend.text = element_text(size = rel(1.8), face = "italic"),
+        axis.text.x = element_text(size = rel(0.9)),
+        axis.title  = element_text(size = rel(1.9)))
 
 p3 <- simsummary_df |> 
   ggplot(aes(x = factor(data_generation2), y = coverage_h, fill = data_generation3)) +
@@ -146,12 +148,13 @@ p3 <- simsummary_df |>
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) +
   xlab("Heterogeneity level") + ylab("Coverage (h)") + 
-  theme(legend.text = element_text(size = rel(1.3)),
-        axis.text.x = element_text(size = rel(0.9)))
+  theme(legend.text = element_text(size = rel(1.8), face = "italic"),
+        axis.text.x = element_text(size = rel(0.9)),
+        axis.title  = element_text(size = rel(1.9)))
 
 p1 + p2 + p3 + plot_layout(guides = "collect")
-ggsave(paste0(output_path, "sim_boxplots.pdf"), plot = last_plot(), device = "pdf", width = 18, height = 5.7)
-ggsave(paste0(output_path, "sim_boxplots.eps"), plot = last_plot(), device = cairo_ps, width = 18, height = 5.7)
+ggsave(paste0(output_path, "sim_boxplots.pdf"), plot = last_plot(), device = "pdf", width = 18, height = 6.5)
+ggsave(paste0(output_path, "sim_boxplots.eps"), plot = last_plot(), device = cairo_ps, width = 18, height = 6.5)
 
 
 graphics.off()
