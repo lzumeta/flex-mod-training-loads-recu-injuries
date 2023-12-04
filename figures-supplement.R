@@ -207,7 +207,7 @@ simsummary_df <- simsummary_df |>
 boxplot_theme <- function(my_gg) {
   my_gg +
   scale_fill_manual(values = c("#009E73", "#F0E442", "#0072B2"), name = "Model:") +
-    xlab("Heterogeneity level") + ylab("RMSE (h)") +
+    xlab("Heterogeneity level") +
     theme(axis.text = element_text(size = rel(2)),
           axis.title = element_text(size = rel(2.9)),
           legend.title = element_text(size = rel(2.9)),
@@ -220,6 +220,7 @@ p1 <- simsummary_df |>
   ggplot(aes(x = factor(data_generation2), y = RMSE_h, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
+  ylab("RMSE (h)") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) 
 p1 |> boxplot_theme()
 
@@ -230,6 +231,7 @@ p2 <- simsummary_df |>
   ggplot(aes(x = factor(data_generation2), y = mse_sigma, fill = data_generation3)) +
   geom_boxplot() + 
   facet_wrap(~data_generation1_new) +
+  ylab(bquote("Squared Error ("*sigma[b]*")")) +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) 
 p2 |> boxplot_theme()
 
@@ -241,6 +243,7 @@ p3 <- simsummary_df |>
   geom_boxplot() + 
   geom_hline(yintercept = 0.95) +
   facet_wrap(~data_generation1_new) +
+  ylab("Coverage (h)") +
   scale_x_discrete(labels = TeX(unique(simsummary_df$data_generation2))) 
 p3 |> boxplot_theme()
 
