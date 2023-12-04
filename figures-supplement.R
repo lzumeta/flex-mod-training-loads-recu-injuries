@@ -105,10 +105,13 @@ plot(hshape6(lags), las = 1, type = "l", ylim = c(-0.0, 0.086),
 dev.off()
 
 # Partial effects (ALL) ---------------------------------------------------
-model_labels     <- c("Uncons.", "Constr.", "Ridge")
+model_labels <- c("Uncons.", "Constr.", "Ridge")
+h_labels2    <- c("(a) exponential decay", "(b) bi-linear", "(c) early peak",
+               "(d) inverted U", "(e) constant", "(f) hat")
 for (h in 1:6) {
   reg <- loadRegistry(paste0(reg_path, "hshape", h, "/"), work.dir = getwd())
-  h_label <- h_labels[[h]]
+  # h_label <- h_labels[[h]]
+  h_label2 <- h_labels2[[h]]
   for (i in 1:3) {
     name_true_sigma <- name_true_sigmas[[i]]
     avg_simresults_df <- data.frame()
@@ -141,7 +144,9 @@ for (h in 1:6) {
   pslicexnsim <- grid.arrange(arrangeGrob(pxnsim1, top = grid::textGrob(expression(sigma[b]*'= 0.05'), gp = grid::gpar(fontsize = rel(24)))),
                               arrangeGrob(pxnsim2, top = grid::textGrob(expression(sigma[b]*'= 0.5'), gp = grid::gpar(fontsize = rel(24)))),
                               arrangeGrob(pxnsim3, top = grid::textGrob(expression(sigma[b]*'= 1'), gp = grid::gpar(fontsize = rel(24)))), ncol = 3, 
-                              top = grid::textGrob(bquote(.(h_label)*" h"[.(h)]*"(t-t"[z]*")*z(t"[z]*")"), 
+                              # top = grid::textGrob(bquote(.(h_label)*" h"[.(h)]*"(t-t"[z]*")*z(t"[z]*")"), 
+                              #                      gp=grid::gpar(fontsize=rel(28), fontface = "bold")),
+                              top = grid::textGrob(h_label2, 
                                                    gp=grid::gpar(fontsize=rel(28), fontface = "bold")),
                               padding = unit(4, "line"))
   
