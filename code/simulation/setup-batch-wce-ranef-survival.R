@@ -1,23 +1,24 @@
 library(batchtools)
+dir.create("registry/", showWarnings = F)
 
 
 if (!dir.exists(paste0("wce-ranef-surv-registry_", hshape))) {
   if (batchh) {
     reg <- makeExperimentRegistry(
-      paste0("wce-ranef-surv-registry_", hshape),
+      paste0("registry/wce-ranef-surv-registry_", hshape),
       conf.file = ".batchtools.conf.R",
       packages  = c("mgcv", "magrittr", "dplyr", "purrr", "pammtools", "ggplot2", "extraDistr"),
       source    = c("problems-wce-ranef-survival.R", "algorithms-wce-ranef-survival.R"),
       seed      = 19190124)
   } else {
     reg <- makeExperimentRegistry(
-      paste0("wce-ranef-surv-registry_", hshape),
+      paste0("registry/wce-ranef-surv-registry_", hshape),
       packages = c("mgcv", "magrittr", "dplyr", "purrr", "pammtools", "ggplot2", "extraDistr"),
       source   = c("problems-wce-ranef-survival.R", "algorithms-wce-ranef-survival.R"),
       seed     = 19190124) 
   }
 } else {
-  reg <- loadRegistry(file.dir = paste0("wce-ranef-surv-registry_", hshape, "/"), writeable=TRUE,
+  reg <- loadRegistry(file.dir = paste0("registry/wce-ranef-surv-registry_", hshape, "/"), writeable=TRUE,
                       work.dir = getwd(), conf.file = ".batchtools.conf.R")
 }
 

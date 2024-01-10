@@ -1,7 +1,7 @@
 ## load registry
 library(batchtools)
 options(batchtools.progress = FALSE)
-reg <- loadRegistry(paste0("wce-ranef-surv-registry_", hshape, "/"), writeable = TRUE, 
+reg <- loadRegistry(paste0("registry/wce-ranef-surv-registry_", hshape, "/"), writeable = TRUE, 
                     work.dir = getwd(), conf.file = ".batchtools.conf.R")
 
 ## set multicore or other parallel options
