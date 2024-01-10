@@ -1,6 +1,6 @@
 # README
 
-I used the `batchtools` package and the abstract experiment description, that they describe there, to structure our code in a convenient way. I separate: the problems, algorithms, experiments and batch system specific parts.
+I used the `batchtools` package and the abstract experiment description (which is described in the package documentation), to structure our code in a convenient way. In this regard, I separate the following parts: the problems, algorithms, experiments and batch system specific parts.
 
 A so-called registry object is created, which defines a directory where all relevant information, files and results of the computational jobs are stored with `makeExperimentRegistry`. Thus, the results are reproducible:
 
@@ -10,7 +10,7 @@ with the ``registry`` object everybody can reproduce the results on their own ba
 
 ## Scripts
 
-`rerun-batchtools.R` is the main script that runs the whole simulation study:
+The main script is `rerun-batchtools.R`. It runs the whole simulation study:
 
 - `create-static-part.R`<br/>
 - `problems-wce-ranef-survival.R`<br/>
