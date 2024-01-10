@@ -7,7 +7,7 @@ if (batchh) {
   .libPaths("../Rlibs/")
 }
 
-# setwd("code/simulation/code_batchtools/")
+# setwd("code/simulation/")
 # To reduce run-time, set a lower number of replications (per scenario)
 # n_simA <- 20
 # set to value below for full replication
