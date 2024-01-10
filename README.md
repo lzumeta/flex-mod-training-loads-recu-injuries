@@ -4,6 +4,8 @@ This is the accompanying code repository for the research paper:
 
 *"Flexible modelling of time-varying exposures and recurrent events to analyze training loads effects in team sports injuries"*.
 
+To re-run the code, 
+
 
 ## Session info
 The R session information is given below:
