@@ -2,23 +2,23 @@ library(batchtools)
 dir.create("registry/", showWarnings = F)
 
 
-if (!dir.exists(paste0("wce-ranef-surv-registry_", hshape))) {
+if (!dir.exists(paste0("registry/wce-ranef-surv-registry_", hshape, "_l", l))) {
   if (batchh) {
     reg <- makeExperimentRegistry(
-      paste0("registry/wce-ranef-surv-registry_", hshape),
+      paste0("registry/wce-ranef-surv-registry_", hshape, "_l", l),
       conf.file = ".batchtools.conf.R",
       packages  = c("mgcv", "magrittr", "dplyr", "purrr", "pammtools", "ggplot2", "extraDistr"),
       source    = c("problems-wce-ranef-survival.R", "algorithms-wce-ranef-survival.R"),
       seed      = 19190124)
   } else {
     reg <- makeExperimentRegistry(
-      paste0("registry/wce-ranef-surv-registry_", hshape),
+      paste0("registry/wce-ranef-surv-registry_", hshape, "_l", l),
       packages = c("mgcv", "magrittr", "dplyr", "purrr", "pammtools", "ggplot2", "extraDistr"),
       source   = c("problems-wce-ranef-survival.R", "algorithms-wce-ranef-survival.R"),
       seed     = 19190124) 
   }
 } else {
-  reg <- loadRegistry(file.dir = paste0("registry/wce-ranef-surv-registry_", hshape, "/"), writeable=TRUE,
+  reg <- loadRegistry(file.dir = paste0("registry/wce-ranef-surv-registry_", hshape, "_l", l, "/"), writeable=TRUE,
                       work.dir = getwd(), conf.file = ".batchtools.conf.R")
 }
 
@@ -29,8 +29,8 @@ saveRegistry()
 
 #### wce ranef for survival data
 addProblem(
-  name = paste0("sim_wce_ranef_ped", ihshape, "_", name_true_sigma),
-  data = readRDS(paste0("input/static_part_ped", ihshape, "_", name_true_sigma,".Rds")),
+  name = paste0("sim_wce_ranef_ped", ihshape, "_", name_true_sigma, "_l", l),
+  data = readRDS(paste0("input/static_part_ped", ihshape, "_", name_true_sigma, "_l", l, ".Rds")),
   fun  = sim_wce_ranef_ped,
   seed = 20160618)
 ## setting a problem seed: the problem seed is incremented only depending on the
@@ -55,7 +55,7 @@ addAlgorithm(
 #                       paste0("sim_wce_ranef_ped", 1:6, "_", name_true_sigma))
 prob_list <- list(data.frame())
 prob_list <- setNames(prob_list,
-                      paste0("sim_wce_ranef_ped", ihshape, "_", name_true_sigma))
+                      paste0("sim_wce_ranef_ped", ihshape, "_", name_true_sigma, "_l", l))
 addExperiments(
   prob.designs = prob_list,
   algo.designs = list(wce_ranef_ped = data.frame(debug = FALSE),

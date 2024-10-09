@@ -10,6 +10,8 @@ code/simulation/input
 code/cumu_effect_analysis/simulation/code_batchtools/output/
 code/simulation/registry*/
 
+test.R
+
 *.pdf
 *.eps
 *.tex

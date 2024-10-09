@@ -1,3 +1,4 @@
+## set theme
 theme_set(theme_bw() +
             theme(
               axis.title   = element_text(size = rel(1.3)),
@@ -7,6 +8,9 @@ theme_set(theme_bw() +
               strip.text   = element_text(size = rel(1.2)),
               plot.title = element_text(hjust = .6, size = rel(1.4), face = "italic")))
 
+## set color palette
+models_palette <- RSSthemes::RSSPalettes$signif_qual[[1]][1:3]
+names(models_palette) <- c("Uncons.", "Constr.", "Ridge")
 
 avg_simresults <- function(res_sim_df, name = "PAMM (WCE)") {
   res_sim_df |>
@@ -85,7 +89,7 @@ gg_pamm_xslice_nsims <- function(res_sim_df, xs = c(1), model_name,
   if (sampled) data <- data |> filter(job.id %in% job.ids)
   data |> 
     ggplot(aes(x = .data$lag2)) +
-    geom_line(aes(y = fit, group = job.id, col = "grey"), alpha = 0.4) +
+    geom_line(aes(y = fit, group = job.id, col = "grey")) +
     geom_line(aes(y = truth, col = "black"), linewidth = 1) +
     geom_line(aes(y = avg_curve, col = "red"), linewidth = 1,
               data = data_avg) +
@@ -97,11 +101,34 @@ gg_pamm_xslice_nsims <- function(res_sim_df, xs = c(1), model_name,
     xlab(expression(t-t[z])) +
     {if (xs == 1)  ylab(expression(hat(h)(t-t[z])))
       else  ylab(expression(hat(h)(t-t[z])*z(t[z])))} +
-    {if (!band_curves) scale_color_manual(name = "", values = c("black", "grey", "red"),
-                                         labels = c("Truth", paste0("*",model_name, "*"), "Mean"))} +
-    {if (band_curves) scale_color_manual(name = "", values = c("black", "blue", "grey", "red"),
-                                         labels = c("Truth","2.5% and 97.5% quant.", 
-                                                    paste0("*", model_name,"*"), "Mean"))} +
+    {if (!band_curves) {
+      list(scale_color_manual(name = "", values = c("black" = "black", 
+                                                    "grey" = alpha(models_palette[[model_name]], 0.1),
+                                                    "red" = darken(models_palette[[model_name]], 0.4)),
+                              labels = c("black" = "Truth",
+                                         "grey" = paste0("*",model_name, "*"), 
+                                         "red" = "Mean")),
+           guides(color = guide_legend(override.aes = list(color = c("black", 
+                                                                     models_palette[[model_name]],
+                                                                     darken(models_palette[[model_name]], 0.4)),
+                                                           linewidth = 1)
+           )
+           )
+      )
+    }
+    } +
+    {if (band_curves) {
+      list(scale_color_manual(name = "", values = c("black", "blue", 
+                                                    alpha(models_palette[[model_name]], 0.1),
+                                                    darken(models_palette[[model_name]], 0.4)),
+                              labels = c("Truth","2.5% and 97.5% quant.", 
+                                         paste0("*", model_name,"*"), "Mean")),
+           guides(colour = guide_legend(override.aes = list(colour = c("black", "blue",
+                                                                       models_palette[[model_name]],
+                                                                       darken(models_palette[[model_name]], 0.4)),
+                                                            linewidth = 1))))
+    }
+    } +
     theme(legend.position = c(0.81, 0.88),#c(0.8, 0.9), 
           legend.background = element_blank(),
           legend.text = ggtext::element_markdown())
@@ -177,10 +204,10 @@ rereduce <- function(data, method = c("aic", "bic", "dev_expl"), model_name) {
 ## replication across each shape and sigma
 best_aic_models <- function(data) {
   data |> 
-    mutate(min_aic = apply(data[,c(4, 7, 10)], 1, function(x) names(x)[which.min(x)]),
-           min_bic = apply(data[,c(5, 8, 11)], 1, function(x) names(x)[which.min(x)]),
-           max_dev = apply(data[,c(6, 9, 12)], 1, function(x) names(x)[which.max(x)])) |> 
-    group_by(data_generation1, data_generation2) |> 
+    mutate(min_aic = apply(data[,c(5, 8, 11)], 1, function(x) names(x)[which.min(x)]),
+           min_bic = apply(data[,c(6, 9, 12)], 1, function(x) names(x)[which.min(x)]),
+           max_dev = apply(data[,c(7, 10, 13)], 1, function(x) names(x)[which.max(x)])) |> 
+    group_by(data_generation1, data_generation2, data_generation3) |> 
     summarise(lowest_aic_PAMM        = sum(min_aic == "aic_PAMM_WCE"),
               lowest_aic_PAMM_RIDGE  = sum(min_aic == "aic_PAMM_WCE_RIDGE"),
               lowest_aic_PAMM_CONSTR = sum(min_aic == "aic_PAMM_WCE_CONSTR."),

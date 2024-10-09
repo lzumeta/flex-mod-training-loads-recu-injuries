@@ -37,9 +37,6 @@ xz <- (xz - min(xz))/diff(range(xz))*10
 # number of exposures per subject
 nz <- 80 # t_z = (1:80 - 41)
 
-# number of subjects
-l <- 500
-
 # sample exposures from the empirical distribution of x
 set.seed(16)
 x <- sample(xz, nz*l, replace = T)
@@ -111,7 +108,7 @@ Xdf$tstart <- Xdf$time
 Xdf$tend   <- Xdf$tstart + 1
 ## calculate linear predictor using:
 ## cumulative effect + intercept + smooth baseline + random effect
-Xdf$eta   <- -7.7 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
+Xdf$eta   <- -9 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
 ## since (we want the survival times to be approx in the range [0, 40]).
@@ -119,6 +116,7 @@ Xdf$eta   <- -7.7 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 # rexp(1, rate=exp(-4.2))
 # rexp(1, rate=exp(-0.6))
 # summary(Xdf$eta)
+# summary(rexp(1:length(Xdf$eta), rate=exp(Xdf$eta)))
 
 #### create new data for prediction + truth column
 ndf <- expand.grid(Z = seq(0, 10, by = 0.25), tz_df = 0:40)
@@ -135,7 +133,7 @@ wce1_ranef_ped_static <- list(
   ndf      = ndf,
   nl       = nl,
   nl_rep   = nl_rep)
-saveRDS(wce1_ranef_ped_static, paste0(input_path, "static_part_ped1_", name_true_sigma, ".Rds"))
+saveRDS(wce1_ranef_ped_static, paste0(input_path, "static_part_ped1_", name_true_sigma, "_l", l, ".Rds"))
 
 
 
@@ -180,7 +178,7 @@ Xdf$tstart <- Xdf$time
 Xdf$tend   <- Xdf$tstart + 1
 ## calculate linear predictor using:
 ## cumulative effect + intercept + smooth baseline + random effect
-Xdf$eta   <- -5 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
+Xdf$eta   <- -10 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
 ## since (we want the survival times to be approx in the range [0, 40]).
@@ -204,7 +202,7 @@ wce2_ranef_ped_static <- list(
   ndf      = ndf,
   nl       = nl,
   nl_rep   = nl_rep)
-saveRDS(wce2_ranef_ped_static, paste0(input_path, "static_part_ped2_", name_true_sigma, ".Rds"))
+saveRDS(wce2_ranef_ped_static, paste0(input_path, "static_part_ped2_", name_true_sigma, "_l", l, ".Rds"))
 
 
 
@@ -249,7 +247,7 @@ Xdf$tstart <- Xdf$time
 Xdf$tend   <- Xdf$tstart + 1
 ## calculate linear predictor using:
 ## cumulative effect + intercept + smooth baseline + random effect
-Xdf$eta   <- -4 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
+Xdf$eta   <- -8.5 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
 ## since (we want the survival times to be approx in the range [0, 40]).
@@ -273,7 +271,7 @@ wce3_ranef_ped_static <- list(
   ndf      = ndf,
   nl       = nl,
   nl_rep   = nl_rep)
-saveRDS(wce3_ranef_ped_static, paste0(input_path, "static_part_ped3_", name_true_sigma, ".Rds"))
+saveRDS(wce3_ranef_ped_static, paste0(input_path, "static_part_ped3_", name_true_sigma, "_l", l, ".Rds"))
 
 
 
@@ -318,7 +316,7 @@ Xdf$tstart <- Xdf$time
 Xdf$tend   <- Xdf$tstart + 1
 ## calculate linear predictor using:
 ## cumulative effect + intercept + smooth baseline + random effect
-Xdf$eta   <- -5.7 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
+Xdf$eta   <- -11.5 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
 
 ## important: the above should be, or it is convenient to be, between the ranges
 ## since (we want the survival times to be approx in the range [0, 40]).
@@ -342,145 +340,9 @@ wce4_ranef_ped_static <- list(
   ndf      = ndf,
   nl       = nl,
   nl_rep   = nl_rep)
-saveRDS(wce4_ranef_ped_static, paste0(input_path, "static_part_ped4_", name_true_sigma, ".Rds"))
+saveRDS(wce4_ranef_ped_static, paste0(input_path, "static_part_ped4_", name_true_sigma, "_l", l, ".Rds"))
 
 
-
-
-# e) h(t-tz): constant ----------------------------------------------------
-# plot(1:40, hshape5(1:40), type = "l")
-## the partial effect function, h(t, t_z, z(t_z)) = h(t-tz)*z(tz)
-hshape5_ztz <- function(x, lag) x*hshape5(lag)
-
-
-# For each subject, go through each row of the Lag matrix and calculate
-# the cumulative effect for each lag.
-# Note: this will be NA for the fist 39 rows, as for the WCE we need
-# max(lag) observations at each time-point at which we want to model the hazard.
-# The cumulative effect is the sum over all 40 partial effects, i.e.
-# h(t-tz=1, z[tz=t-1]) + h(t-tz=2, z[tz=t-2]) + ... + h(t-tz=40, z[tz=t-40])
-eff_vec  <- sapply(lag_list, apply, 1, fcumeff, 0:40, "hshape5_ztz")
-
-## create full data set (observations for each subject and time-point)
-Xdf <- data.frame(id = id, time = time, eta_wce = as.vector(eff_vec))
-## create covariates for linear functionals
-# these need to be matrices with repeated entries, for mgcv to recognize the
-# specified terms as cumulative effects
-# - Z = exposure history matrix
-# - tz_df = matrix of exposure times t_z
-# - time_df = matrix of time-points of the follow-up
-# - LL = lag-lead matrix
-Xdf$Z       <- do.call(rbind, lapply(x_list, matrix, nrow = nz, ncol = nz, byrow = TRUE))
-Xdf$tz_df   <- matrix(1:nz, nrow = nrow(Xdf), ncol = nz, byrow = TRUE)
-Xdf$time_df <- matrix(Xdf$time, nrow = nrow(Xdf), ncol = nz)
-diff_df     <- (Xdf$time_df - Xdf$tz_df)
-Xdf$LL      <- ((diff_df >= 0) & (diff_df <= 40))*1
-set.seed(16)
-Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = nz)
-
-## follow up starts after 40 days of exposure, such that every subject has
-## complete exposure history of 40 exposures at the beginning of the follow-up
-Xdf$time <- Xdf$time - 41
-## remove all obs before follow-up starts
-Xdf        <- Xdf[Xdf$time >= 0, ]
-Xdf$tstart <- Xdf$time
-Xdf$tend   <- Xdf$tstart + 1
-## calculate linear predictor using:
-## cumulative effect + intercept + smooth baseline + random effect
-Xdf$eta   <- -5 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
-
-## important: the above should be, or it is convenient to be, between the ranges
-## since (we want the survival times to be approx in the range [0, 40]).
-## Upon this will depend the censorship
-# rexp(1, rate=exp(-4.2))
-# rexp(1, rate=exp(-0.6))
-# summary(Xdf$eta)
-
-#### create new data for prediction + truth column
-ndf <- expand.grid(Z = seq(0, 10, by = 0.25), tz_df = 0:40)
-# any time will do (later we only use coefficients for hshape1_ztz estimation)
-ndf$tend  <- 20
-ndf$LL    <- 1
-ndf$id    <- 1
-ndf$truth <- apply(ndf, 1, function(x) {hshape5_ztz(x[1], x[2])})
-
-
-## save static part of the simulation (wce and random effect, ped)
-wce5_ranef_ped_static <- list(
-  X        = Xdf,
-  ndf      = ndf,
-  nl       = nl,
-  nl_rep   = nl_rep)
-saveRDS(wce5_ranef_ped_static, paste0(input_path, "static_part_ped5_", name_true_sigma, ".Rds"))
-
-
-
-
-# f) h(t-tz): hat ---------------------------------------------------------
-# plot(1:40, hshape6(1:40), type = "l")
-## the partial effect function, h(t, t_z, z(t_z)) = h(t-tz)*z(tz)
-hshape6_ztz <- function(x, lag) x*hshape6(lag)
-
-
-# For each subject, go through each row of the Lag matrix and calculate
-# the cumulative effect for each lag.
-# Note: this will be NA for the fist 39 rows, as for the WCE we need
-# max(lag) observations at each time-point at which we want to model the hazard.
-# The cumulative effect is the sum over all 40 partial effects, i.e.
-# h(t-tz=1, z[tz=t-1]) + h(t-tz=2, z[tz=t-2]) + ... + h(t-tz=40, z[tz=t-40])
-eff_vec  <- sapply(lag_list, apply, 1, fcumeff, 0:40, "hshape6_ztz")
-
-## create full data set (observations for each subject and time-point)
-Xdf <- data.frame(id = id, time = time, eta_wce = as.vector(eff_vec))
-## create covariates for linear functionals
-# these need to be matrices with repeated entries, for mgcv to recognize the
-# specified terms as cumulative effects
-# - Z = exposure history matrix
-# - tz_df = matrix of exposure times t_z
-# - time_df = matrix of time-points of the follow-up
-# - LL = lag-lead matrix
-Xdf$Z       <- do.call(rbind, lapply(x_list, matrix, nrow = nz, ncol = nz, byrow = TRUE))
-Xdf$tz_df   <- matrix(1:nz, nrow = nrow(Xdf), ncol = nz, byrow = TRUE)
-Xdf$time_df <- matrix(Xdf$time, nrow = nrow(Xdf), ncol = nz)
-diff_df     <- (Xdf$time_df - Xdf$tz_df)
-Xdf$LL      <- ((diff_df >= 0) & (diff_df <= 40))*1
-set.seed(16)
-Xdf$ranef   <- rep(rnorm(l, mean = 0, sd = true_sigma), each = nz)
-
-## follow up starts after 40 days of exposure, such that every subject has
-## complete exposure history of 40 exposures at the beginning of the follow-up
-Xdf$time <- Xdf$time - 41
-## remove all obs before follow-up starts
-Xdf        <- Xdf[Xdf$time >= 0, ]
-Xdf$tstart <- Xdf$time
-Xdf$tend   <- Xdf$tstart + 1
-## calculate linear predictor using:
-## cumulative effect + intercept + smooth baseline + random effect
-Xdf$eta   <- -6 + f0(Xdf$time) + Xdf$eta_wce + Xdf$ranef
-
-## important: the above should be, or it is convenient to be, between the ranges
-## since (we want the survival times to be approx in the range [0, 40]).
-## Upon this will depend the censorship
-# rexp(1, rate=exp(-4.2))
-# rexp(1, rate=exp(-0.6))
-# summary(Xdf$eta)
-
-#### create new data for prediction + truth column
-ndf <- expand.grid(Z = seq(0, 10, by = 0.25), tz_df = 0:40)
-# any time will do (later we only use coefficients for hshape1_ztz estimation)
-ndf$tend  <- 20
-ndf$LL    <- 1
-ndf$id    <- 1
-ndf$truth <- apply(ndf, 1, function(x) {hshape6_ztz(x[1], x[2])})
-
-
-## save static part of the simulation (wce and random effect, ped)
-wce6_ranef_ped_static <- list(
-  X        = Xdf,
-  ndf      = ndf,
-  nl       = nl,
-  nl_rep   = nl_rep)
-saveRDS(wce6_ranef_ped_static, paste0(input_path, "static_part_ped6_", name_true_sigma, ".Rds"))
 
 
 # # Plot true WCE-cumulative effects ----------------------------------------
