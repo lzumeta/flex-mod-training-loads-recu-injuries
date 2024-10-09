@@ -12,8 +12,8 @@ if (batchh) {
 # set to value below for full replication
 n_simA <- 500
 
-true_sigmas        <- c(0.05, 0.5)  ## c(0.05, 0.5, 1)
-names(true_sigmas) <- c("verylow", "low") ## c("verylow", "low", "high")
+true_sigmas        <- c(0.05, 0.5, 1)
+names(true_sigmas) <- c("verylow", "low", "high")
 hshapes            <- paste0("hshape", 1:4)
 ihshapes           <- 1:4
 l                  <- c(20, 40, 100)
@@ -23,7 +23,7 @@ l                  <- c(20, 40, 100)
 #                                                      true_sigmas == 0.5 ~ "low",
 #                                                      true_sigmas == 1 ~ "high"))
 params_sub <- data.frame(true_sigmas = rep(true_sigmas, each = 3),
-                                     l = rep(l, 2)) |>
+                                     l = rep(l, 3)) |>
   dplyr::mutate(names_true_sigmas = dplyr::case_when(true_sigmas == 0.05 ~ "verylow",
                                                      true_sigmas == 0.5 ~ "low",
                                                      true_sigmas == 1 ~ "high"))
