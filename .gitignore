@@ -13,6 +13,7 @@ code/simulation/registry*/
 test.R
 
 *.pdf
+!Supplementary_material.pdf
 *.eps
 *.tex
 *.slurm
