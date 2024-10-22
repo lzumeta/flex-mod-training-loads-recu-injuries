@@ -97,7 +97,7 @@ p
 p + labs(caption = expression("L = 100 players, "*sigma[b]*" = 0.5")) +
   theme(plot.caption = element_text(size = rel(1.2), colour = "gray25"))
 ggsave(paste0(output_path, "sim_hshapes_all_l100.pdf"), last_plot(), width = 16, height = 9.2)
-ggsave(paste0(output_path, "sim_hshapes_all_l100.eps"), p, device = cairo_ps, width = 16, height = 9.2)
+ggsave(paste0(output_path, "sim_hshapes_all_l100.eps"), last_plot(), device = cairo_ps, width = 16, height = 9.2)
 
 
 rm(list = ls()[str_detect(ls(), "pxnsim")])
@@ -272,7 +272,7 @@ list(p_RMSE_h, # A
   wrap_plots() +
   plot_layout(widths = c(40), heights = c(30, 4, 30, 4, 30, 7, 5), design = design)
 ggsave(paste0(output_path, "sim_boxplots_all.pdf"), plot = last_plot(), device = "pdf", width = 15.7, height = 15.7*1.35)
-ggsave(paste0(output_path, "sim_boxplots_all.eps"), plot = last_plot(), device = "pdf", width = 15.7, height = 15.7*1.35)
+ggsave(paste0(output_path, "sim_boxplots_all.eps"), plot = last_plot(), device = cairo_ps, width = 15.7, height = 15.7*1.35)
 
 graphics.off()
 
