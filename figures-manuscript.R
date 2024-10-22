@@ -272,6 +272,7 @@ list(p_RMSE_h, # A
   wrap_plots() +
   plot_layout(widths = c(40), heights = c(30, 4, 30, 4, 30, 7, 5), design = design)
 ggsave(paste0(output_path, "sim_boxplots_all.pdf"), plot = last_plot(), device = "pdf", width = 15.7, height = 15.7*1.35)
+ggsave(paste0(output_path, "sim_boxplots_all.eps"), plot = last_plot(), device = "pdf", width = 15.7, height = 15.7*1.35)
 
 graphics.off()
 
