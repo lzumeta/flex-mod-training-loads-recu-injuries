@@ -2,7 +2,7 @@
 
 This is the accompanying code repository for the research paper:
 
-*"Flexible modelling of time-varying exposures and recurrent events to analyze training loads effects in team sports injuries"*.
+[*"Flexible modelling of time-varying exposures and recurrent events to analyze training loads effects in team sports injuries"*](https://academic.oup.com/jrsssc/advance-article/doi/10.1093/jrsssc/qlae059/7909398)
 
 To re-run the code, and to reproduce the figures and tables of the research paper, please run the `code/simulation/rerun-batchtools.R` script. This will generate a folder with all the results.
 
